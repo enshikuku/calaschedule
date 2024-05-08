@@ -27,9 +27,9 @@ const connection = mysql.createConnection({
     database: 'calafiles'
 })
 
-const profileStorage = multer.diskStorage({
+const profilepicture = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './public/profile')
+        cb(null, './public/profile-picture')
     },
     filename: function (req, file, cb) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
@@ -37,18 +37,7 @@ const profileStorage = multer.diskStorage({
     }
 })
 
-const pdfStorage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, './public/pdf')
-    },
-    filename: function (req, file, cb) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-        cb(null, 'pdf-' + uniqueSuffix + path.extname(file.originalname))
-    }
-})
-
-const uploadProfile = multer({ storage: profileStorage })
-const uploadPDF = multer({ storage: pdfStorage })
+const uploadProfile = multer({ storage: profilepicture })
 
 app.use((req, res, next) => {
     res.locals.username = req.session.username !== undefined ? req.session.username : 'Guest'
@@ -57,8 +46,6 @@ app.use((req, res, next) => {
     res.locals.tutor = req.session.tutor !== undefined ? req.session.tutor : false
     next()
 })
-
-
 
 function loginRequired(req, res) {
     res.locals.isLoggedIn || res.redirect('/login')

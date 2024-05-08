@@ -67,7 +67,7 @@ function loginRequired(req, res) {
 const offensiveWords = ['FUCK', 'SHIT', 'ASSHOLE', 'ASS', 'BITCH', 'DICK', 'CUNT', 'COCK', 'PUSSY', 'SLUT', 'WHORE', 'FAGGOT', 'MOTHERFUCKER', 'NIGGER', 'RETARD', 'TWAT', 'WANKER', 'ASSWIPE', 'BASTARD', 'DAMN', 'GODDAMN', 'ARSE', 'BOLLOCKS', 'BULLSHIT', 'CRAP', 'JACKASS', 'JERK', 'PISS',  'PRICK', 'SCREW', 'SUCK', 'TITS', 'ASSCLOWN', 'DUMBASS', 'FUCKER', 'SHITHEAD', 'ASSFACE', 'ASSHAT', 'CUM', 'DICKHEAD', 'ASSBAG', 'DIPSHIT', 'FUCKFACE', 'MOTHERFUCKING', 'NIGGA',  'SHITHOLE', 'ASSNUGGET', 'BASTARD', 'BLOWJOB', 'COCKSUCKER', 'CUMSLUT', 'DICKBAG', 'DICKWEED', 'DOUCHEBAG', 'FUCKTARD', 'JACKOFF', 'JIZZ', 'MOTHERFUCK', 'NIGGERS', 'PRICKFACE', 'SEX', 'SHITBAG', 'SHITSTAIN', 'TITFUCK', 'WANKSTAIN']
 
 function generateid() {
-    const characters = 'ABCDEFGHKMNPQRSTUVWXYZ23456789'
+    const characters = '1234567890'
     let genId
     do {
         const randomCharacters = Array.from({ length: 3 }, () => characters.charAt(Math.floor(Math.random() * characters.length)))

@@ -1,11 +1,11 @@
-import express from 'express';
-import mysql from 'mysql';
-import session from 'express-session';
-import bcrypt from 'bcrypt';
-import multer from 'multer';
-import dotenv from 'dotenv';
-import nodemailer from 'nodemailer';
-import path from 'path';
+import express from 'express'
+import mysql from 'mysql'
+import session from 'express-session'
+import bcrypt from 'bcrypt'
+import multer from 'multer'
+import dotenv from 'dotenv'
+import nodemailer from 'nodemailer'
+import path from 'path'
 
 const app = express()
 
@@ -29,7 +29,7 @@ const connection = mysql.createConnection({
 
 const profilepicture = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, './public/profile-picture')
+        cb(null, './public/profilepicture')
     },
     filename: function (req, file, cb) {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
@@ -37,7 +37,7 @@ const profilepicture = multer.diskStorage({
     }
 })
 
-const uploadProfile = multer({ storage: profilepicture })
+const uploadProfilePicture = multer({ storage: profilepicture })
 
 app.use((req, res, next) => {
     res.locals.username = req.session.username !== undefined ? req.session.username : 'Guest'
@@ -478,7 +478,7 @@ app.get('/edit-user', (req, res) => {
         )
 })
 
-app.post('/update-profile', uploadProfile.single('profilepicture'), (req, res) => {
+app.post('/update-profile', uploadProfilePicture.single('profilepicture'), (req, res) => {
     loginRequired(req, res)
     const user = {
         name: req.body.name,

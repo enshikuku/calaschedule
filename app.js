@@ -1,11 +1,11 @@
-const express = require('express')
-const mysql = require('mysql')
-const session = require('express-session')                                                               
-const bcrypt = require('bcrypt')
-const multer = require('multer')
-const dotenv = require('dotenv')
-const nodemailer = require('nodemailer')
-const path = require('path')
+import express from 'express';
+import mysql from 'mysql';
+import session from 'express-session';
+import bcrypt from 'bcrypt';
+import multer from 'multer';
+import dotenv from 'dotenv';
+import nodemailer from 'nodemailer';
+import path from 'path';
 
 const app = express()
 
@@ -14,7 +14,7 @@ app.use(express.static('public'))
 app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 app.use(session({
-    secret: 'c@!@$0m@',
+    secret: process.env.SECRET,
     saveUninitialized: false,
     resave: true
 }))
@@ -796,24 +796,6 @@ app.get('/add-pdf', (req, res) => {
         res.redirect('/notes')
     }
 })
-
-app.post('/upload-pdf', uploadPDF.single('pdf'), (req, res) => {
-    loginRequired(req, res)
-    const pdf = {
-        title: req.body.title,
-        def: req.body.definition,
-        filename: req.file.filename
-    }
-    let sql = 'INSERT INTO pdf (title, filename, def) VALUES (?, ?, ?)'
-    connection.query(
-        sql,
-        [pdf.title, pdf.filename, pdf.def],
-        (error, results) => {
-            res.redirect('/notes')
-        }
-    )
-})
-
 app.get('/logout', (req, res) => {
     loginRequired(req, res)
     req.session.destroy((err) => {

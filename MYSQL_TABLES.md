@@ -11,50 +11,46 @@ CREATE TABLE sessions (
     sessionid VARCHAR(10),
     timestamp TIMESTAMP
 );
--- user table: stores user information
-CREATE TABLE user (
-    user_id SERIAL PRIMARY KEY,
+
+CREATE TABLE users (
+    user_id VARCHAR(10) PRIMARY KEY,
     name VARCHAR(100),
     email VARCHAR(100) UNIQUE,
-    password VARCHAR(100),
+    password VARCHAR(255),
     profilepicture VARCHAR(100) DEFAULT 'user.png',
     role VARCHAR(50) DEFAULT 'student'
 );
 
--- classes table: stores class information
-CREATE TABLE classes (
-    class_id SERIAL PRIMARY KEY,
+CREATE TABLE courses (
+    course_id SERIAL PRIMARY KEY,
+    course_code VARCHAR(10),
     name VARCHAR(100),
     description TEXT
 );
 
--- days table: stores days of the week
 CREATE TABLE days (
     day_id SERIAL PRIMARY KEY,
     name VARCHAR(20) -- 'Monday', 'Tuesday', etc.
 );
 
--- rooms table: stores room information
 CREATE TABLE rooms (
     room_id SERIAL PRIMARY KEY,
     name VARCHAR(50),
     capacity INT
 );
 
--- schedules table: stores scheduling information
 CREATE TABLE schedules (
     schedule_id SERIAL PRIMARY KEY,
-    class_id INT REFERENCES classes(class_id),
-    day_id INT REFERENCES days(day_id),
+    course_id SERIAL REFERENCES courses(course_id),
+    day_id SERIAL REFERENCES days(day_id),
     start_time TIME,
     end_time TIME,
-    room_id INT REFERENCES rooms(room_id),
-    teacher_id INT REFERENCES user(user_id)
+    room_id SERIAL REFERENCES rooms(room_id),
+    teacher_id VARCHAR(10) REFERENCES users(user_id)
 );
 
--- enrollments table: stores information about student enrollments
 CREATE TABLE enrollments (
     enrollment_id SERIAL PRIMARY KEY,
-    class_id INT REFERENCES classes(class_id),
-    student_id INT REFERENCES user(user_id)
+    course_id SERIAL REFERENCES courses(course_id),
+    student_id VARCHAR(10) REFERENCES users(user_id)
 );

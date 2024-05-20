@@ -6,12 +6,6 @@ CREATE TABLE otp (
     email VARCHAR(255)
 );
 
-CREATE TABLE sessions (
-    id INT(11) AUTO_INCREMENT PRIMARY KEY,
-    sessionid VARCHAR(10),
-    timestamp TIMESTAMP
-);
-
 CREATE TABLE user (
     user_id VARCHAR(10) PRIMARY KEY,
     name VARCHAR(100),

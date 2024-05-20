@@ -3,19 +3,32 @@
 <!-- End Header -->
 
     <!-- ======= Navbar Section ======= -->
-    
+    <!-- ======= Header ======= -->
+<header id="header" class="fixed-top d-flex align-items-center  header-transparent ">
+    <div class="container d-flex align-items-center justify-content-between">
+        <div class="logo">
+            <!-- <h1><a href="/">CALASCHEDULE</a></h1> -->
+            <a href="/"><img src="assets/img/logo.png" alt="" class="img-fluid">CALASCHEDULE</a>
+        </div>
+        <nav id="navbar" class="navbar">
+            <ul>
+                <li><a class="nav-link scrollto" href="/">Home</a></li>
+                <li><a class="nav-link scrollto" href="/signup">Signup</a></li>
+                <li><a class="nav-link scrollto active" href="/login">Login</a></li>
+            </ul>
+            <i class="bi bi-list mobile-nav-toggle"></i>
+        </nav><!-- End navbar -->
+    </div>
+</header><!-- End Header -->
     <!-- ======= Main Section ======= -->
-        <main id="main" style="height: 70vh;">
+        <main id="main" style="margin-top: 50px; min-height: 60vh;">
             <section id="contact" class="contact">
                 <div class="container" data-aos="fade-up">
                     <div class="section-title">
                         <h2>Login</h2>
-                        <p>Enter your details to Sign In</p>
+                        <p>Enter your details to Sign In. Don't have an account? <a href="/signup">Click here</a> to Create one</p>
                     </div>
                     <form action="/login" method="post" role="form" class="php-email-form">
-                        <div class="text-center col-12">
-                            <a style="font-size: 20px;" href="/signup">Don't have an account? Click here to Create one</a><br>
-                        </div>
                         <% if(error){ %>
                             <div class="alert alert-danger" role="alert">
                                 <%= message %>

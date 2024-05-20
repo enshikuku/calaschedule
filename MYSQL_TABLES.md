@@ -12,7 +12,7 @@ CREATE TABLE sessions (
     timestamp TIMESTAMP
 );
 
-CREATE TABLE users (
+CREATE TABLE user (
     user_id VARCHAR(10) PRIMARY KEY,
     name VARCHAR(100),
     email VARCHAR(100) UNIQUE,
@@ -25,7 +25,7 @@ CREATE TABLE courses (
     course_id SERIAL PRIMARY KEY,
     course_code VARCHAR(10),
     name VARCHAR(100),
-    description TEXT
+    lecturer VARCHAR(100)
 );
 
 CREATE TABLE days (
@@ -41,16 +41,16 @@ CREATE TABLE rooms (
 
 CREATE TABLE schedules (
     schedule_id SERIAL PRIMARY KEY,
-    course_id SERIAL REFERENCES courses(course_id),
-    day_id SERIAL REFERENCES days(day_id),
+    course_id INT REFERENCES courses(course_id),
+    day_id INT REFERENCES days(day_id),
     start_time TIME,
     end_time TIME,
-    room_id SERIAL REFERENCES rooms(room_id),
-    teacher_id VARCHAR(10) REFERENCES users(user_id)
+    room_id INT REFERENCES rooms(room_id),
+    lecturer_id VARCHAR(10) REFERENCES users(user_id)
 );
 
 CREATE TABLE enrollments (
-    enrollment_id SERIAL PRIMARY KEY,
-    course_id SERIAL REFERENCES courses(course_id),
+    enrollment_id INT PRIMARY KEY,
+    course_id INT REFERENCES courses(course_id),
     student_id VARCHAR(10) REFERENCES users(user_id)
 );

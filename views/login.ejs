@@ -3,11 +3,9 @@
 <!-- End Header -->
 
     <!-- ======= Navbar Section ======= -->
-        <%- include('partials/nav') %>
-    <!-- End Navbar -->
-
+    
     <!-- ======= Main Section ======= -->
-        <main id="main">
+        <main id="main" style="height: 70vh;">
             <section id="contact" class="contact">
                 <div class="container" data-aos="fade-up">
                     <div class="section-title">
@@ -15,6 +13,9 @@
                         <p>Enter your details to Sign In</p>
                     </div>
                     <form action="/login" method="post" role="form" class="php-email-form">
+                        <div class="text-center col-12">
+                            <a href="/signup">Don't have an account? Signup</a><br>
+                        </div>
                         <% if(error){ %>
                             <div class="alert alert-danger" role="alert">
                                 <%= message %>
@@ -23,12 +24,12 @@
                         <div class="row gy-2 gx-md-3">
                             <div class="col-md-6 form-group">
                                 <label for="email">Your Email</label>
-                                <input type="email" class="form-control" name="email" value="<%= user.email %>" id="email" />
+                                <input type="email" required class="form-control" name="email" value="<%= user.email %>" id="email" />
                             </div>
                             <div class="col-md-6 form-group">
                                 <label for="password">Password</label>
                                 <div class="input-group">
-                                    <input type="password" class="form-control" name="password" value="<%= user.passsword %>" id="password" />
+                                    <input type="password" required class="form-control" name="password" value="<%= user.passsword %>" id="password" />
                                     <button type="button" class="btn btn-outline-secondary" id="showPasswordToggle">
                                         <i class="bi bi-eye" id="eyeIcon"></i>
                                     </button>

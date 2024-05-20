@@ -56,13 +56,6 @@ function generateid() {
     return genid.join('')
 }
 
-// Function to generate random session
-function generatesession() {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
-    const genses = Array.from({ length: 10 }, () => characters.charAt(Math.floor(Math.random() * characters.length)))
-    return genses.join('')
-}
-
 // Function to generate random OTP
 function generateotp() {
     const characters = '1234567890'
@@ -111,20 +104,7 @@ const sendMail = (data, callback) => {
 
 // Route to render the home page
 app.get('/', (req, res) => {
-    if (req.session.modesession) {
-        res.render('index')
-        return
-    }
-    let newId = ''
-    let sql = 'SELECT * FROM sessions WHERE sessionid = ?'
-    do {
-        newId = generatesession()
-    } while (checkIfIdExists(newId, sql))
-    req.session.modesession = newId
-    let sqlsession = 'INSERT INTO sessions (sessionid) VALUES (?)'
-    connection.query(sqlsession, [newId], (error, results) => {
-        res.render('index')
-    })
+    res.render('index')
 })
 
 // Route to handle signup page rendering
@@ -337,7 +317,15 @@ app.post('/login', (req, res) => {
 
 app.get('/dashboard', (req, res) => {
     if (req.session.userID) {
-        res.render('dashboard')
+        let coursesSQL = 'SELECT * FROM courses'
+        connection.query(coursesSQL, (error, results) => {
+            if (error) {
+                console.error('Error querying courses:', error)
+                res.status(500).send('Error querying courses')
+                return
+            }
+            res.render('dashboard', { courses: results })
+        })
     } else {
         res.redirect('/login')
     }

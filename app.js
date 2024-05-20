@@ -111,7 +111,20 @@ const sendMail = (data, callback) => {
 
 // Route to render the home page
 app.get('/', (req, res) => {
-    res.render('index')
+    if (req.session.modesession) {
+        res.render('index')
+        return
+    }
+    let newId = ''
+    let sql = 'SELECT * FROM sessions WHERE sessionid = ?'
+    do {
+        newId = generatesession()
+    } while (checkIfIdExists(newId, sql))
+    req.session.modesession = newId
+    let sqlsession = 'INSERT INTO sessions (sessionid) VALUES (?)'
+    connection.query(sqlsession, [newId], (error, results) => {
+        res.render('index')
+    })
 })
 
 // Route to handle signup page rendering

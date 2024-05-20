@@ -16,7 +16,9 @@ CREATE TABLE user (
     user_id SERIAL PRIMARY KEY,
     name VARCHAR(100),
     email VARCHAR(100) UNIQUE,
-    role VARCHAR(50) -- 'student', 'teacher', 'admin'
+    password VARCHAR(100),
+    profilepicture VARCHAR(100) DEFAULT 'user.png',
+    role VARCHAR(50) DEFAULT 'student'
 );
 
 -- classes table: stores class information

@@ -3,43 +3,91 @@
     <!-- ======= Hero Section ======= -->
     <section id="hero" class="d-flex flex-column justify-content-end align-items-center">
         <div id="heroCarousel" data-bs-interval="5000" class="container carousel carousel-fade" data-bs-ride="carousel">
-            <!-- Slide 1 -->
-            <div class="carousel-item active">
-                <div class="carousel-container">
-                    <h2 class="animate__animated animate__fadeInDown">Todays First Class</h2>
-                    <p class="animate__animated fanimate__adeInUp">COMP 422- Engineering and Software Law</p>
-                    <p class="animate__animated fanimate__adeInUp">Venue: NS1, At 9.00 AM</p>
-                    <a href="#timetable" class="btn-get-started animate__animated animate__fadeInUp scrollto">View Full Timetable</a>
-                </div>
-            </div>
+            <% const today = new Date(); %>
+            <% const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]; %>
+            <% const currentDay = weekdays[today.getDay()]; %>
+            <% let classesForDay = studentClasses.filter(classItem => classItem.day_id === today.getDay()); %>
         
-            <!-- Slide 2 -->
-            <div class="carousel-item">
-                <div class="carousel-container">
-                    <h2 class="animate__animated animate__fadeInDown">Todays Second Class</h2>
-                    <p class="animate__animated fanimate__adeInUp">COMP 426- Mobile Application Development</p>
-                    <p class="animate__animated fanimate__adeInUp">Venue: NS1, At 11.00 AM</p>
-                    <a href="#timetable" class="btn-get-started animate__animated animate__fadeInUp scrollto">View Full Timetable</a>
+            <% if(classesForDay.length > 0) { %>
+                <% classesForDay.forEach((classItem, index) => { %>
+                    <% if(index === 0){ %>
+                        <div class="carousel-item active">
+                            <div class="carousel-container">
+                                <h2 class="animate__animated animate__fadeInDown"><%= classesForDay.length %> Classes on <%= currentDay %>:</h2>
+                                <p>
+                                    <% 
+                                        switch (index) {
+                                            case 0:
+                                                %> First <% 
+                                                break;
+                                            case 1:
+                                                %> Second <% 
+                                                break;
+                                            case 2:
+                                                %> Third <% 
+                                                break;
+                                            case 3:
+                                                %> Fourth <% 
+                                                break;
+                                            case 4:
+                                                %> Fifth <% 
+                                                break;
+                                            case 5:
+                                                %> Sixth <% 
+                                                break;
+                                        } 
+                                    %> Class <%= classItem.course_code %> - At <%= classItem.start_time %>, Venue: <%= classItem.venue %>
+                                </p>
+                                <a href="#timetable" class="btn-get-started animate__animated animate__fadeInUp scrollto">View Full Timetable</a>
+                            </div>
+                        </div>
+                    <% } else { %>
+                        <div class="carousel-item">
+                            <div class="carousel-container">
+                                <h2 class="animate__animated animate__fadeInDown"><%= classesForDay.length %> Classes on <%= currentDay %>:</h2>
+                                <p>
+                                    <% 
+                                        switch (index) {
+                                            case 0:
+                                                %> First <% 
+                                                break;
+                                            case 1:
+                                                %> Second <% 
+                                                break;
+                                            case 2:
+                                                %> Third <% 
+                                                break;
+                                            case 3:
+                                                %> Fourth <% 
+                                                break;
+                                            case 4:
+                                                %> Fifth <% 
+                                                break;
+                                            case 5:
+                                                %> Sixth <% 
+                                                break;
+                                        } 
+                                    %> Class <%= classItem.course_code %> - At <%= classItem.start_time %>, Venue: <%= classItem.venue %>
+                                </p>
+                                <a href="#timetable" class="btn-get-started animate__animated animate__fadeInUp scrollto">View Full Timetable</a>
+                            </div>
+                        </div>
+                    <% } %>
+                <% }); %>
+            <% } else { %>
+                <div class="carousel-item active">
+                    <div class="carousel-container">
+                        <h2 class="animate__animated animate__fadeInDown">No classes Today</h2>
+                        <a href="#timetable" class="btn-get-started animate__animated animate__fadeInUp scrollto">View Full Timetable</a>
+                    </div>
                 </div>
-            </div>
-        
-            <!-- Slide 3 -->
-            <div class="carousel-item">
-                <div class="carousel-container">
-                    <h2 class="animate__animated animate__fadeInDown">Todays Third Class</h2>
-                    <p class="animate__animated fanimate__adeInUp">COMP 424- Expert System</p>
-                    <p class="animate__animated fanimate__adeInUp">Venue: BS3, At 3.00 PM</p>
-                    <a href="#timetable" class="btn-get-started animate__animated animate__fadeInUp scrollto">View Full Timetable</a>
+                <div class="carousel-item">
+                    <div class="carousel-container">
+                        <h2 class="animate__animated animate__fadeInDown">Take a rest. Wait for tomorrow's classes</h2>
+                        <a href="#timetable" class="btn-get-started animate__animated animate__fadeInUp scrollto">View Full Timetable</a>
+                    </div>
                 </div>
-            </div>
-
-            <!-- Slide 3 -->
-            <div class="carousel-item">
-                <div class="carousel-container">
-                    <h2 class="animate__animated animate__fadeInDown">No Classes Today</h2>
-                    <a href="#timetable" class="btn-get-started animate__animated animate__fadeInUp scrollto">View Full Timetable</a>
-                </div>
-            </div>
+            <% } %>
         
             <a class="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon bx bx-chevron-left" aria-hidden="true"></span>
@@ -49,6 +97,8 @@
                 <span class="carousel-control-next-icon bx bx-chevron-right" aria-hidden="true"></span>
             </a>
         </div>
+        
+        
         <svg class="hero-waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
             viewBox="0 24 150 28 " preserveAspectRatio="none">
             <defs>
@@ -69,169 +119,59 @@
     <main id="main">
         <!-- ======= About Section ======= -->
         <section id="timetable" class="about">
+            
             <div class="container">
                 <div class="section-title" data-aos="zoom-out">
                     <h2>Timetable</h2>
-                    <p>Monday</p>
+                    <p>Today is <strong><%= weekdays[today.getDay()] %></strong></p>
                 </div>
                 <div class="row content" data-aos="fade-up">
-                    <div>
-                        <h2>Monday</h2>
+                    <% days.forEach(day => { %>
                         <div>
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Time</th>
-                                        <th scope="col">Class</th>
-                                        <th scope="col">Venue</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">9.00 AM</th>
-                                        <td>COMP 422</td>
-                                        <td>NS1</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">11.00 AM</th>
-                                        <td>COMP 426</td>
-                                        <td>NS1</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3.00 PM</th>
-                                        <td>COMP 424</td>
-                                        <td>BS3</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <h2><%= day.name %></h2>
+                            <div>
+                                <% let classesForDay = studentClasses.filter(classItem => classItem.day_id === day.day_id); %>
+                                <% if(classesForDay.length > 0) { %>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Time</th>
+                                                <th scope="col">Class</th>
+                                                <th scope="col">Venue</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% classesForDay.forEach(classItem => { %>
+                                                <tr>
+                                                    <td><%= classItem.start_time %></td>
+                                                    <td><%= classItem.course_code %></td>
+                                                    <td><%= classItem.venue %></td>
+                                                </tr>
+                                            <% }); %>
+                                        </tbody>
+                                    </table>
+                                <% } else { %>
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="3" scope="row" style="font-size: 18px;">No classes on <%= day.name %></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><i class="bi bi-circle-fill"></i></td>
+                                                <td><i class="bi bi-circle-fill"></i></td>
+                                                <td><i class="bi bi-circle-fill"></i></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                <% } %>
+                            </div>
                         </div>
-                    </div>
-                    <div>
-                        <h2>Tuesday</h2>
-                        <div>
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Time</th>
-                                        <th scope="col">Class</th>
-                                        <th scope="col">Venue</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">9.00 AM</th>
-                                        <td>COMP 422</td>
-                                        <td>NS1</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">11.00 AM</th>
-                                        <td>COMP 426</td>
-                                        <td>NS1</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3.00 PM</th>
-                                        <td>COMP 424</td>
-                                        <td>BS3</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div>
-                        <h2>Wednesday</h2>
-                        <div>
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Time</th>
-                                        <th scope="col">Class</th>
-                                        <th scope="col">Venue</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">9.00 AM</th>
-                                        <td>COMP 422</td>
-                                        <td>NS1</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">11.00 AM</th>
-                                        <td>COMP 426</td>
-                                        <td>NS1</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3.00 PM</th>
-                                        <td>COMP 424</td>
-                                        <td>BS3</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div>
-                        <h2>Thursday</h2>
-                        <div>
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Time</th>
-                                        <th scope="col">Class</th>
-                                        <th scope="col">Venue</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">9.00 AM</th>
-                                        <td>COMP 422</td>
-                                        <td>NS1</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">11.00 AM</th>
-                                        <td>COMP 426</td>
-                                        <td>NS1</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3.00 PM</th>
-                                        <td>COMP 424</td>
-                                        <td>BS3</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div>
-                        <h2>Friday</h2>
-                        <div>
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Time</th>
-                                        <th scope="col">Class</th>
-                                        <th scope="col">Venue</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <th scope="row">9.00 AM</th>
-                                        <td>COMP 422</td>
-                                        <td>NS1</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">11.00 AM</th>
-                                        <td>COMP 426</td>
-                                        <td>NS1</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3.00 PM</th>
-                                        <td>COMP 424</td>
-                                        <td>BS3</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+                    <% }) %>
                 </div>
             </div>
+            
         </section><!-- End About Section -->
 
 <!-- ======= Testimonials Section ======= -->
@@ -240,16 +180,17 @@
 
         <div class="section-title" data-aos="zoom-out">
             <h2>Courses</h2>
+            <p>These are the Courses available for registration together with the Lecturers that will be taking you through them.</p>
         </div>
         <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
             <div class="swiper-wrapper">
                 <% courses.forEach(course => { %>
                     <div class="swiper-slide">
                         <div class="testimonial-item">
-                            <img src="assets/img/testimonials/<%= course.profilepicture %>" class="testimonial-img" alt="">
-                            <h3><%= course.lecturer %></h3>
+                            <img src="assets/img/testimonials/<%= course.lecturer_profilepicture %>" class="testimonial-img" alt="">
+                            <h3><%= course.lecturer_name %></h3>
                             <h4 style="font-family: sans-serif; font-size: 30px; color: black;"><%= course.course_code %></h4>  
-                            <h3><%= course.name %></h3>
+                            <h3><%= course.course_name %></h3>
                         </div>
                     </div>
                 <% }) %>
@@ -265,8 +206,7 @@
       <div class="container">
         <div class="section-title" data-aos="zoom-out">
           <h2>Get in Touch</h2>
-          <p>Contact Us</p>
-          <p style="font-size: 18px; text-transform: none; font-weight: normal;">Have questions or feedback? We'd love to hear from you! Reach out to us for support, inquiries, or partnership opportunities. Your input helps us continually improve CALASCHEDULE for the entire educational community.</p>
+          <p>Have questions or feedback? We'd love to hear from you! Reach out to us for support, inquiries, or partnership opportunities. Your input helps us continually improve CALASCHEDULE for the entire educational community.</p>
         </div>
         <div class="row mt-5">
         <div class="col-lg-4" data-aos="fade-right">

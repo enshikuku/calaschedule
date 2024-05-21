@@ -6,6 +6,7 @@ CREATE TABLE otp (
     email VARCHAR(255)
 );
 
+
 CREATE TABLE user (
     user_id VARCHAR(10) PRIMARY KEY,
     name VARCHAR(100),
@@ -16,10 +17,18 @@ CREATE TABLE user (
 );
 
 CREATE TABLE courses (
-    course_id SERIAL PRIMARY KEY,
+    course_id INT(11) AUTO_INCREMENT PRIMARY KEY,
     course_code VARCHAR(10),
     name VARCHAR(100),
-    lecturer VARCHAR(100)
+    lecturer_id VARCHAR(10) REFERENCES user(user_id)
+);
+
+CREATE TABLE enrollments (
+    enrollment_id INT(11) AUTO_INCREMENT PRIMARY KEY,
+    course_id INT(11),
+    student_id VARCHAR(10),
+    FOREIGN KEY (course_id) REFERENCES courses(course_id),
+    FOREIGN KEY (student_id) REFERENCES user(user_id)
 );
 
 CREATE TABLE days (
@@ -40,11 +49,5 @@ CREATE TABLE schedules (
     start_time TIME,
     end_time TIME,
     room_id INT REFERENCES rooms(room_id),
-    lecturer_id VARCHAR(10) REFERENCES users(user_id)
-);
-
-CREATE TABLE enrollments (
-    enrollment_id INT PRIMARY KEY,
-    course_id INT REFERENCES courses(course_id),
-    student_id VARCHAR(10) REFERENCES users(user_id)
+    lecturer_id VARCHAR(10) REFERENCES user(user_id)
 );

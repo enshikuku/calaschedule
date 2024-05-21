@@ -43,8 +43,8 @@ const uploadProfilePicture = multer({ storage: profilepicture })
 // Middleware to set locals
 app.use((req, res, next) => {
     res.locals.username = req.session.username !== undefined ? req.session.username : 'Guest'
-    res.locals.isLoggedIn = req.session.userID !== undefined
-    res.locals.userID = req.session.userID
+    res.locals.isLoggedIn = req.session.user_id !== undefined
+    res.locals.user_id = req.session.user_id
     res.locals.tutor = req.session.tutor !== undefined ? req.session.tutor : false
     next()
 })
@@ -253,7 +253,7 @@ app.post('/verify-otp', (req, res) => {
                                 res.status(500).send('Error sending email')
                                 return
                             }
-                            req.session.userID = user.id
+                            req.session.user_id = user.id
                             req.session.username = user.name.split(' ')[0]
                             res.redirect('/dashboard')
                         })
@@ -297,7 +297,7 @@ app.post('/login', (req, res) => {
             if (results.length > 0) {
                 const passwordMatches = await bcrypt.compare(user.password, results[0].password)
                 if (passwordMatches) {
-                    req.session.userID = results[0].user_id
+                    req.session.user_id = results[0].user_id
                     req.session.username = results[0].name.split(' ')[0]
                     res.redirect('/dashboard')
                 } else {
@@ -316,16 +316,86 @@ app.post('/login', (req, res) => {
 })
 
 app.get('/dashboard', (req, res) => {
-    if (req.session.userID) {
-        let coursesSQL = 'SELECT * FROM courses'
-        connection.query(coursesSQL, (error, results) => {
-            if (error) {
-                console.error('Error querying courses:', error)
-                res.status(500).send('Error querying courses')
-                return
+    if (req.session.user_id) {
+        let coursesSQL = 'SELECT c.course_id, c.course_code, c.name AS course_name, u.name AS lecturer_name, u.profilepicture AS lecturer_profilepicture FROM courses c JOIN user u ON c.lecturer_id = u.user_id'
+        connection.query(
+            coursesSQL, (error, courses) => {
+                if (error) {
+                    console.error('Error querying courses:', error)
+                    res.status(500).send('Error querying courses')
+                    return
+                }
+                let daysSQL = 'SELECT * FROM days'
+                connection.query(
+                    daysSQL, (error, days) => {
+                        if (error) {
+                            console.error('Error querying days:', error)
+                            res.status(500).send('Error querying days')
+                            return
+                        }
+                        let roomsSQL = 'SELECT * FROM rooms'
+                        connection.query(
+                            roomsSQL, (error, rooms) => {
+                                if (error) {
+                                    console.error('Error quering rooms:', error)
+                                    res.status(500).send('Error quering rooms')
+                                    return
+                                }
+                                let studentClassesSQL = 'SELECT c.course_code, s.start_time, r.name AS venue, s.day_id FROM enrollments e JOIN courses c ON e.course_id = c.course_id JOIN schedules s ON c.course_id = s.course_id JOIN rooms r ON s.room_id = r.room_id WHERE e.student_id = ?'
+                                connection.query(
+                                    studentClassesSQL, [req.session.user_id], (error, studentClasses) => {
+                                        if (error) {
+                                            console.error('Error quering rooms:', error)
+                                            res.status(500).send('Error quering rooms')
+                                            return
+                                        }
+                                        res.render('dashboard', {rooms, days, courses, studentClasses})
+                                    }
+                                )
+                            }
+                        )
+                    }
+                )
             }
-            res.render('dashboard', { courses: results })
-        })
+        )
+    } else {
+        res.redirect('/login')
+    }
+})
+
+app.get('/schedule', (req, res) => {
+    if (req.session.user_id) {
+        let coursesSQL = 'SELECT * FROM courses'
+        connection.query(
+            coursesSQL, (error, courses) => {
+                if (error) {
+                    console.error('Error querying courses:', error)
+                    res.status(500).send('Error querying courses')
+                    return
+                }
+                let daysSQL = 'SELECT * FROM days'
+                connection.query(
+                    daysSQL, (error, days) => {
+                        if (error) {
+                            console.error('Error querying days:', error)
+                            res.status(500).send('Error querying days')
+                            return
+                        }
+                        let roomsSQL = 'SELECT * FROM rooms'
+                        connection.query(
+                            roomsSQL, (error, rooms) => {
+                                if (error) {
+                                    console.error('Error quering rooms:', error)
+                                    res.status(500).send('Error quering rooms')
+                                    return
+                                }
+                                res.render('schedule', {rooms: rooms, days: days, courses: courses})
+                            }
+                        )
+                    }
+                )
+            }
+        )
     } else {
         res.redirect('/login')
     }

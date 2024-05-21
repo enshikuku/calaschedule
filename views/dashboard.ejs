@@ -124,6 +124,9 @@
                 <div class="section-title" data-aos="zoom-out">
                     <h2>Timetable</h2>
                     <p>Today is <strong><%= weekdays[today.getDay()] %></strong></p>
+                    <div class="quote-container" style="height: 30px; color: aliceblue;">
+                        <p><span id="quote"></span></p>
+                    </div>
                 </div>
                 <div class="row content" data-aos="fade-up">
                     <% days.forEach(day => { %>
@@ -158,11 +161,11 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
+                                            <!-- <tr>
                                                 <td><i class="bi bi-circle-fill"></i></td>
                                                 <td><i class="bi bi-circle-fill"></i></td>
                                                 <td><i class="bi bi-circle-fill"></i></td>
-                                            </tr>
+                                            </tr> -->
                                         </tbody>
                                     </table>
                                 <% } %>
@@ -181,13 +184,14 @@
         <div class="section-title" data-aos="zoom-out">
             <h2>Courses</h2>
             <p>These are the Courses available for registration together with the Lecturers that will be taking you through them.</p>
+            <a href="/enroll" style="font-size: 20px;" class="enrollnowbtn">Enroll Now</a>
         </div>
         <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
             <div class="swiper-wrapper">
                 <% courses.forEach(course => { %>
                     <div class="swiper-slide">
                         <div class="testimonial-item">
-                            <img src="assets/img/testimonials/<%= course.lecturer_profilepicture %>" class="testimonial-img" alt="">
+                            <img src="profilepicture/<%= course.lecturer_profilepicture %>" class="testimonial-img" alt="">
                             <h3><%= course.lecturer_name %></h3>
                             <h4 style="font-family: sans-serif; font-size: 30px; color: black;"><%= course.course_code %></h4>  
                             <h3><%= course.course_name %></h3>
@@ -200,70 +204,54 @@
 
     </div>
 </section><!-- End Testimonials Section -->
+<% include('partials/contact') %>
+</main><!-- End #main -->
 
-    <!-- ======= Contact Section ======= -->
-    <section id="contact" class="contact">
-      <div class="container">
-        <div class="section-title" data-aos="zoom-out">
-          <h2>Get in Touch</h2>
-          <p>Have questions or feedback? We'd love to hear from you! Reach out to us for support, inquiries, or partnership opportunities. Your input helps us continually improve CALASCHEDULE for the entire educational community.</p>
-        </div>
-        <div class="row mt-5">
-        <div class="col-lg-4" data-aos="fade-right">
-            
-            <div class="info">
-              <div class="address">
-                <i class="bi bi-geo-alt"></i>
-                <h4>Location:</h4>
-                <p>A108 Adam Street, New York, NY 535022</p>
-              </div>
-              <div class="email">
-                <i class="bi bi-envelope"></i>
-                <h4>Email:</h4>
-                <p>info@example.com</p>
-              </div>
+<script>
+    const quotes = [
+        '"Education is the passport to the future, for tomorrow belongs to those who prepare for it today." - Malcolm X',
+        '"The only true wisdom is in knowing you know nothing." - Socrates',
+        '"Education is not the filling of a pail, but the lighting of a fire." - W.B. Yeats',
+        '"The function of education is to teach one to think intensively and to think critically. Intelligence plus character - that is the goal of true education." - Martin Luther King Jr.',
+        '"An investment in knowledge pays the best interest." - Benjamin Franklin',
+        '"The beautiful thing about learning is that no one can take it away from you." - B.B. King',
+        '"Live as if you were to die tomorrow. Learn as if you were to live forever." - Mahatma Gandhi',
+        '"Education is the most powerful weapon which you can use to change the world." - Nelson Mandela',
+        '"The roots of education are bitter, but the fruit is sweet." - Aristotle',
+        '"Education is not preparation for life; education is life itself." - John Dewey',
+        '"I am not a teacher, but an awakener." - Robert Frost',
+        '"The mind is not a vessel to be filled, but a fire to be kindled." - Plutarch',
+        '"Education is the key to unlock the golden door of freedom." - George Washington Carver',
+        '"The great aim of education is not knowledge but action." - Herbert Spencer',
+        '"Learning never exhausts the mind." - Leonardo da Vinci',
+        '"Education is what remains after one has forgotten what one has learned in school." - Albert Einstein',
+        '"The best way to predict your future is to create it." - Abraham Lincoln',
+        '"The only person who is educated is the one who has learned how to learn and change." - Carl Rogers',
+        '"Education is the movement from darkness to light." - Allan Bloom',
+        '"Education is the foundation upon which we build our future." - Christine Gregoire'
+    ]
 
-              <div class="phone">
-                <i class="bi bi-phone"></i>
-                <h4>Call:</h4>
-                <p>+1 5589 55488 55s</p>
-              </div>
+    const quoteElement = document.getElementById('quote');
 
-            </div>
+    const currentQuoteIndex = () => Math.floor(Math.random() * 21);
 
-          </div>
+    function typeQuote() {
+        const quote = quotes[currentQuoteIndex()];
+        let i = 0;
+        const typingInterval = setInterval(() => {
+            if (i <= quote.length) {
+                quoteElement.textContent = quote.slice(0, i);
+                i++;
+            } else {
+                clearInterval(typingInterval);
+                setTimeout(() => {
+                    typeQuote();
+                }, 3000); // Wait for 5 seconds before typing the next quote
+            }
+        }, 5); 
+    }
 
-          <div class="col-lg-8 mt-5 mt-lg-0" data-aos="fade-left">
+    typeQuote();
 
-            <form action="forms/contact.php" method="post" role="form" class="php-email-form">
-              <div class="row">
-                <div class="col-md-6 form-group">
-                  <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required>
-                </div>
-                <div class="col-md-6 form-group mt-3 mt-md-0">
-                  <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required>
-                </div>
-              </div>
-              <div class="form-group mt-3">
-                <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required>
-              </div>
-              <div class="form-group mt-3">
-                <textarea class="form-control" name="message" rows="5" placeholder="Message" required></textarea>
-              </div>
-              <div class="my-3">
-                <div class="loading">Loading</div>
-                <div class="error-message"></div>
-                <div class="sent-message">Your message has been sent. Thank you!</div>
-              </div>
-              <div class="text-center"><button type="submit">Send Message</button></div>
-            </form>
-
-          </div>
-
-        </div>
-
-      </div>
-    </section><!-- End Contact Section -->
-
-  </main><!-- End #main -->
-  <%- include('partials/footer') %>
+</script>
+<%- include('partials/footer') %>

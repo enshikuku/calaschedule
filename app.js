@@ -38,7 +38,7 @@ const profilepicture = multer.diskStorage({
     }
 })
 
-const uploadProfilePicture = multer({ storage: profilepicture })
+const uploadprofilePicture = multer({ storage: profilepicture })
 
 // Middleware to set locals
 app.use((req, res, next) => {
@@ -273,8 +273,8 @@ app.post('/verify-otp', (req, res) => {
 // Route to render the login page
 app.get('/login', (req, res) => {
     const user = {
-        email: '',
-        password: ''
+        email: 'enshikuku@gmail.com',
+        password: '21'
     }
     res.render('login', { error: false, user: user })
 })
@@ -356,6 +356,72 @@ app.get('/dashboard', (req, res) => {
                         )
                     }
                 )
+            }
+        )
+    } else {
+        res.redirect('/login')
+    }
+})
+
+app.get('/enroll', (req, res) => {
+    if (req.session.user_id) {
+        let coursesSQL = 'SELECT c.course_id, c.course_code, c.name AS course_name, u.name AS lecturer_name, u.profilepicture AS lecturer_profilepicture FROM courses c JOIN user u ON c.lecturer_id = u.user_id WHERE c.course_id NOT IN (SELECT course_id FROM enrollments WHERE student_id = ?)'
+        connection.query(
+            coursesSQL, [req.session.user_id], (error, courses) => {
+                if (error) {
+                    console.error('Error querying courses:', error)
+                    res.status(500).send('Error querying courses')
+                    return
+                }
+                res.render('enroll', {courses: courses})
+            }
+        )
+    } else {
+        res.redirect('/login')
+    }
+})
+
+app.post('/enroll', (req, res) => {
+    if (req.session.user_id) {
+        let student_id = req.session.user_id
+        let courses = req.body.courses
+        let enrollmentSQL = 'INSERT INTO enrollments (course_id, student_id) VALUES (?, ?)'
+        courses.forEach(course => {
+            connection.query(enrollmentSQL, [course, student_id], (error, results) => {
+                if (error) {
+                    console.error('Error enrolling student:', error)
+                    return res.status(500).send('Error enrolling student')
+                }
+                console.log('Student:', student_id, 'enrolled successfully to Course:' , course)
+            })
+        })
+        res.redirect('/dashboard')
+    } else {
+        res.redirect('/login')
+    }
+})
+
+app.get('/profile', (req, res) => {
+    if (req.session.user_id) {
+        let userSQL = 'SELECT * FROM user WHERE user_id = ?'
+        connection.query(
+            userSQL, [req.session.user_id], (error, user) => {
+                if (error) {
+                    console.error('Error querying user:', error)
+                    res.status(500).send('Error querying user')
+                    return
+                }
+                let enrolledcoursesSQL = 'SELECT courses.course_code, courses.name AS course_name FROM courses JOIN enrollments ON courses.course_id = enrollments.course_id WHERE enrollments.student_id = ?'
+                connection.query(
+                    enrolledcoursesSQL, [req.session.user_id], (error, enrolledcourses) => {
+                        if (error) {
+                            console.error('Error querying ENROLLED courses:', error)
+                            res.status(500).send('Error querying ENROLLED courses')
+                            return
+                        }
+                        res.render('profile', {user: user[0], enrolledcourses: enrolledcourses})
+                    }
+                )    
             }
         )
     } else {

@@ -653,6 +653,189 @@ section {
   background-color: #ef6603;
 }
 
+table.course-toenroll {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.course-toenroll th, .course-toenroll td {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+.course-toenroll th {
+  background-color: #f2f2f2;
+}
+
+.course-toenroll img {
+  max-width: 50px;
+  height: auto;
+}
+
+.enrollment-form {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background: #f9f9f9;
+}
+
+.enrollment-form .form-group {
+  margin-bottom: 15px;
+}
+
+.enrollment-form .form-control {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.enrollment-form .form-control:focus {
+  border-color: #ef6603;
+  box-shadow: 0 0 5px #ef660333;
+}
+
+.enrollment-form label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.enrollment-form .form-check {
+  margin-bottom: 10px;
+}
+
+.enrollment-form .form-check-label {
+  margin-left: 5px;
+}
+
+.enrollment-form button[type="submit"] {
+  background: #ef6603;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.enrollment-form button[type="submit"]:hover {
+  background: #ef6603;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -10px;
+}
+
+.col-md-6 {
+  width: 100%;
+  padding: 10px;
+}
+
+@media (min-width: 768px) {
+  .col-md-6 {
+      width: 50%;
+  }
+}
+.enrollnowbtn {
+  display: inline-block;
+  font-size: 14px;
+  padding: 4px 8px;
+  border: 3px solid #ef6603;
+  margin: 0 0.3em 0.3em 0;
+  border-radius: 0.12em;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  color: #ef6603;
+  text-align: center;
+  transition: all 0.2s;
+  animation: enrollnowbtnbouncy 4s infinite linear;
+  position: relative;
+}
+
+.enrollnowbtn:hover {
+  background-color: #ef6603;
+  color: #ffffff;
+}
+
+@keyframes enrollnowbtnbouncy {
+  0% {
+    top: 0em;
+  }
+  40% {
+    top: 0em;
+  }
+  43% {
+    top: -0.9em;
+  }
+  46% {
+    top: 0em;
+  }
+  48% {
+    top: -0.4em;
+  }
+  50% {
+    top: 0em;
+  }
+  100% {
+    top: 0em;
+  }
+}
+
+.no-enrollments {
+  max-width: 800px;
+  min-height: 50vh;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+@media (min-width: 768px) {
+  .no-enrollments {
+      width: 95%;
+      min-height: fit-content;
+      display: block;
+  }
+}
+
+.no-enrollments .no-enrollments-container {
+  margin-bottom: 30px;
+}
+
+.no-enrollments .no-enrollments-container h2 {
+  color: #ef6603;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.no-enrollments .no-enrollments-container p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.quote-container {
+  text-align: left;
+  margin-top: 30px;
+}
+
+#quote {
+  font-size: 18px;
+  font-style: italic;
+  color: #000000;
+}
+
 /*--------------------------------------------------------------
 # F.A.Q
 --------------------------------------------------------------*/

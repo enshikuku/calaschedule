@@ -163,16 +163,15 @@ app.post('/signup', async (req, res) => {
                             const mailData = {
                                 from: process.env.EMAIL,
                                 to: user.email,
-                                subject: 'Welcome to CALAFILES - Your Personalized Learning Platform',
-                                text: `Dear ${user.name},\n\nWelcome to CALAFILES! Your One-Time Password (OTP) for account verification is ${OTP}. This OTP will expire in 10 minutes.\n\nHappy learning!\n\nBest regards,\nThe CALAFILES Team`
-                            }
+                                subject: 'Welcome to CALASCHEDULE - Your Personalized Class Scheduling Platform',
+                                text: `Dear ${user.name},\n\nWelcome to CALASCHEDULE! Your One-Time Password (OTP) for account verification is ${OTP}. This OTP will expire in 10 minutes.\n\nHappy scheduling!\n\nBest regards,\nThe CALASCHEDULE Team`
+                            }                            
                             sendMail(mailData, (error) => {
                                 if (error) {
                                     console.error('Error sending email:', error)
                                     res.status(500).send('Error sending email')
                                     return
                                 }
-                                console.log('OTP inserted')
                                 res.render('otp', { error: false, user: user, newId: newId })
                                 setTimeout(() => {
                                     let sql = 'SELECT otpcode FROM otp WHERE email = ?'
@@ -183,7 +182,7 @@ app.post('/signup', async (req, res) => {
                                                 if (updateError) {
                                                     console.error('Error updating OTP status:', updateError)
                                                 } else {
-                                                    console.log('OTP status updated to true')
+                                                    console.log('OTP status updated to true', updateResults)
                                                 }
                                             })
                                         } else {
@@ -244,8 +243,8 @@ app.post('/verify-otp', (req, res) => {
                         const mailData = {
                             from: process.env.EMAIL,
                             to: user.email,
-                            subject: 'Welcome to CALAFILES - Your Personalized Learning Platform',
-                            text: `Dear ${user.name},\n\nWelcome to CALAFILES! Your account has been successfully created. Start your personalized learning journey today.\n\nIf you have any questions or need assistance, feel free to reach out to our support team.\n\nHappy learning!\n\nBest regards,\nThe CALAFILES Team`
+                            subject: 'Welcome to CALASCHEDULE - Your Personalized Class Scheduling Platform',
+                            text: `Dear ${user.name},\n\nWelcome to CALASCHEDULE! Your account has been successfully created. Start managing your class schedules and stay updated with any changes directly from your lecturers.\n\nIf you have any questions or need assistance, feel free to reach out to our support team.\n\nHappy scheduling!\n\nBest regards,\nThe CALASCHEDULE Team`
                         }
                         sendMail(mailData, (error) => {
                             if (error) {
@@ -273,8 +272,8 @@ app.post('/verify-otp', (req, res) => {
 // Route to render the login page
 app.get('/login', (req, res) => {
     const user = {
-        email: 'enshikuku@gmail.com',
-        password: '21'
+        email: '',
+        password: ''
     }
     res.render('login', { error: false, user: user })
 })
@@ -392,7 +391,6 @@ app.post('/enroll', (req, res) => {
                     console.error('Error enrolling student:', error)
                     return res.status(500).send('Error enrolling student')
                 }
-                console.log('Student:', student_id, 'enrolled successfully to Course:' , course)
             })
         })
         res.redirect('/dashboard')

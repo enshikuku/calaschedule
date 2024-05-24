@@ -427,6 +427,47 @@ app.get('/profile', (req, res) => {
     }
 })
 
+app.get('/edit-profile', (req, res) => {
+    if (req.session.user_id) {
+        let userSQL = 'SELECT * FROM user WHERE user_id = ?'
+        connection.query(
+            userSQL, [req.session.user_id], (error, user) => {
+                if (error) {
+                    console.error('Error querying user:', error)
+                    res.status(500).send('Error querying user')
+                    return
+                }
+                res.render('edit-profile', {user: user[0]})
+            }
+        )
+    } else {
+        res.redirect('/login')
+    }
+})
+
+app.post('/edit-profile', uploadprofilePicture.single('profilepicture'), (req, res) => {
+    if (req.session.user_id) {
+        let user = {
+            name: req.body.name,
+            email: req.body.email,
+            profilepicture: req.file ? req.file.filename : req.body.ifnoprofilepic
+        }        
+        let userSQL = 'UPDATE user SET name = ?, email = ?, profilepicture = ? WHERE user_id = ?'
+        connection.query(
+            userSQL, [user.name, user.email, user.profilepicture, req.session.user_id], (error, results) => {
+                if (error) {
+                    console.error('Error updating user:', error)
+                    res.status(500).send('Error updating user')
+                    return
+                }
+                res.redirect('/profile')
+            }
+        )
+    } else {
+        res.redirect('/login')
+    }
+})
+
 app.get('/schedule', (req, res) => {
     if (req.session.user_id) {
         let coursesSQL = 'SELECT * FROM courses'

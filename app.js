@@ -728,7 +728,15 @@ app.get('/admin', (req, res) => {
 
 app.get('/tutor-dash', (req, res) => {
     if (req.session.user_id) {
-        
+        let myClasses = 'SELECT c.course_id, c.course_code, c.name AS course_name, u.user_id AS tutor_id, u.name AS tutor_name, d.dpt_name AS department_name, s.schedule_id, s.day_id, days.name AS day_name, s.start_time, s.end_time, s.room_id, rooms.name AS room_name FROM courses c JOIN user u ON c.lecturer_id = u.user_id JOIN departments d ON c.dpt_code = d.dpt_code JOIN schedules s ON c.course_id = s.course_id JOIN days ON s.day_id = days.day_id JOIN rooms ON s.room_id = rooms.room_id WHERE u.user_id = ?;'
+        connection.query(myClasses, [req.session.user_id], (error, classes) => {
+            if (error) {
+                console.error('Error querying classes:', error)
+                res.status(500).send('Error querying classes')
+                return
+            }
+            res.render('tutor-dash', {classes: classes})
+        })
     } else {
         res.redirect('/login')
     }

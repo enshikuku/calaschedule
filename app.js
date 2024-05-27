@@ -104,7 +104,15 @@ const sendMail = (data, callback) => {
 
 // Route to render the home page
 app.get('/', (req, res) => {
-    res.render('index')
+    let testimonials = 'SELECT * FROM testimonials'
+    connection.query(testimonials, (error, results) => {
+        if (error) {
+            console.error('Error querying testimonials:', error)
+            res.status(500).send('Error querying testimonials')
+            return
+        }
+        res.render('index', { testimonials: results })
+    })
 })
 
 // Route to handle signup page rendering

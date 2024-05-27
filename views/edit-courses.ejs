@@ -1,0 +1,116 @@
+<%- include('partials/header') %>
+<%- include('partials/nav') %>
+<main id="main">
+    <!-- ======= Unenroll Section ======= -->
+    <section id="unenroll" class="unenroll">
+        <div class="container" style="margin-top: 30px;">
+            <div class="section-title" data-aos="zoom-out">
+                <h2>Unenrollment</h2>
+            </div>
+            <div class="col-lg-8 mt-5 mt-lg-0" data-aos="fade-left">
+                <% if(enrolledcourses.length > 0) { %>
+                    <h2>Enrolled Courses</h2>
+                    <p>Here is a list of courses you are currently enrolled in. Select the ones you wish to unenroll from.</p>
+                    <form action="/unenroll" method="post" role="form" class="unenrollment-form">
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input type="checkbox" class="form-check-input" id="select-all" onclick="toggleSelectAll(this)">
+                                <label class="form-check-label" for="select-all">Select All</label>
+                            </div>
+                            <% enrolledcourses.forEach(course => { %>
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input course-checkbox" name="courses" value="<%= course.course_id %>" id="<%= course.course_id %>">
+                                    <label class="form-check-label" for="<%= course.course_id %>"><%= course.course_code %> - <%= course.course_name %></label>
+                                </div>
+                            <% }) %>
+                        </div>
+                        <div class="text-center mt-3">
+                            <button type="submit" class="btn btn-danger">Unenroll Selected Courses</button>
+                        </div>
+                    </form>
+                <% } else { %>
+                    <div class="no-enrollments">
+                        <div class="no-enrollments-container">
+                            <h2>No Courses Enrolled</h2>
+                            <p>You are not currently enrolled in any courses. If you would like to enroll in courses, please visit the enrollment page.</p>
+                            <a href="/enroll" class="enrollnowbtn">Enroll Now</a>
+                        </div>
+                        <div class="quote-container" style="height: 30px;">
+                            <p><span id="quote"></span></p>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </section>
+</main><!-- End #main -->
+<%- include('partials/footer') %>
+
+<script>
+    function toggleSelectAll(selectAllCheckbox) {
+        const checkboxes = document.querySelectorAll('.course-checkbox')
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = selectAllCheckbox.checked
+        })
+    }
+
+    function validateForm(event) {
+        const checkboxes = document.querySelectorAll('.course-checkbox')
+        const isAnyCheckboxChecked = Array.from(checkboxes).some(checkbox => checkbox.checked)
+        if (!isAnyCheckboxChecked) {
+            alert("Please select at least one course.")
+            event.preventDefault()
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const form = document.querySelector('.unenrollment-form')
+        form.addEventListener('submit', validateForm)
+    })
+
+    const quotes = [
+        '"Education is the passport to the future, for tomorrow belongs to those who prepare for it today." - Malcolm X',
+        '"The only true wisdom is in knowing you know nothing." - Socrates',
+        '"Education is not the filling of a pail, but the lighting of a fire." - W.B. Yeats',
+        '"The function of education is to teach one to think intensively and to think critically. Intelligence plus character - that is the goal of true education." - Martin Luther King Jr.',
+        '"An investment in knowledge pays the best interest." - Benjamin Franklin',
+        '"The beautiful thing about learning is that no one can take it away from you." - B.B. King',
+        '"Live as if you were to die tomorrow. Learn as if you were to live forever." - Mahatma Gandhi',
+        '"Education is the most powerful weapon which you can use to change the world." - Nelson Mandela',
+        '"The roots of education are bitter, but the fruit is sweet." - Aristotle',
+        '"Education is not preparation for life; education is life itself." - John Dewey',
+        '"I am not a teacher, but an awakener." - Robert Frost',
+        '"The mind is not a vessel to be filled, but a fire to be kindled." - Plutarch',
+        '"Education is the key to unlock the golden door of freedom." - George Washington Carver',
+        '"The great aim of education is not knowledge but action." - Herbert Spencer',
+        '"Learning never exhausts the mind." - Leonardo da Vinci',
+        '"Education is what remains after one has forgotten what one has learned in school." - Albert Einstein',
+        '"The best way to predict your future is to create it." - Abraham Lincoln',
+        '"The only person who is educated is the one who has learned how to learn and change." - Carl Rogers',
+        '"Education is the movement from darkness to light." - Allan Bloom',
+        '"Education is the foundation upon which we build our future." - Christine Gregoire'
+    ]
+
+    const quoteElement = document.getElementById('quote');
+
+    const currentQuoteIndex = () => Math.floor(Math.random() * 21);
+
+    function typeQuote() {
+        const quote = quotes[currentQuoteIndex()];
+        let i = 0;
+        const typingInterval = setInterval(() => {
+            if (i <= quote.length) {
+                quoteElement.textContent = quote.slice(0, i);
+                i++;
+            } else {
+                clearInterval(typingInterval);
+                setTimeout(() => {
+                    typeQuote();
+                }, 5000); // Wait for 5 seconds before typing the next quote
+            }
+        }, 40); // Typing speed (milliseconds per character)
+    }
+
+    typeQuote();
+
+</script>

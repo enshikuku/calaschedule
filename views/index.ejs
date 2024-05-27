@@ -49,89 +49,30 @@
             </div>
         </section><!-- End About Section -->
 
-            <!-- ======= Testimonials Section ======= -->
-    <section id="testimonials" class="testimonials">
-      <div class="container">
-
-          <div class="section-title" data-aos="zoom-out">
-              <h2>Testimonials</h2>
-              <p>What they are saying about us</p>
-          </div>
-
-          <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
-              <div class="swiper-wrapper">
-
-                  <div class="swiper-slide">
-                      <div class="testimonial-item">
-                          <p>
-                              <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                              As the CEO & Founder of CALASCHEDULE, I'm proud to see how our platform is empowering students and Lecturers alike. It's fulfilling to witness the positive impact it's making in the education sector.
-                              <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-                          </p>
-                          <img src="assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
-                          <h3>Shikuku Emmanuel</h3>
-                          <h4>Ceo &amp; Founder</h4>
-                      </div>
-                  </div><!-- End testimonial item -->
-
-                  <div class="swiper-slide">
-                      <div class="testimonial-item">
-                          <p>
-                              <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                              As a Lecturer, CALASCHEDULE has simplified my scheduling process immensely. I can easily manage my appointments and communicate changes with my students seamlessly.
-                              <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-                          </p>
-                          <img src="assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
-                          <h3>Sara Wilsson</h3>
-                          <h4>Lecturer</h4>
-                      </div>
-                  </div><!-- End testimonial item -->
-
-                  <div class="swiper-slide">
-                      <div class="testimonial-item">
-                          <p>
-                              <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                              CALASCHEDULE has made coordinating group study sessions a breeze. It's helped our study group stay organized and focused on our goals.
-                              <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-                          </p>
-                          <img src="assets/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
-                          <h3>Jena Karlis</h3>
-                          <h4>Student</h4>
-                      </div>
-                  </div><!-- End testimonial item -->
-
-                  <div class="swiper-slide">
-                      <div class="testimonial-item">
-                          <p>
-                              <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                              I've tried several scheduling apps, but CALASCHEDULE stands out for its user-friendly interface and robust features. It's truly a game-changer for both students and Lecturers.
-                              <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-                          </p>
-                          <img src="assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
-                          <h3>Matt Brandon</h3>
-                          <h4>Student</h4>
-                      </div>
-                  </div><!-- End testimonial item -->
-
-                  <div class="swiper-slide">
-                      <div class="testimonial-item">
-                          <p>
-                              <i class="bx bxs-quote-alt-left quote-icon-left"></i>
-                              CALASCHEDULE has been a lifesaver for me as a busy Lecturer. I can easily manage multiple classes and appointments, which frees up more time for actual teaching.
-                              <i class="bx bxs-quote-alt-right quote-icon-right"></i>
-                          </p>
-                          <img src="assets/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
-                          <h3>John Larson</h3>
-                          <h4>Lecturer</h4>
-                      </div>
-                  </div><!-- End testimonial item -->
-
-              </div>
-              <div class="swiper-pagination"></div>
-          </div>
-
-      </div>
-  </section><!-- End Testimonials Section -->
+        <!-- ======= Testimonials Section ======= -->
+        <section id="testimonials" class="testimonials">
+            <div class="container">
+                <div class="section-title" data-aos="zoom-out">
+                    <h2>Testimonials</h2>
+                    <p>What they are saying about us</p>
+                </div>
+                <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
+                    <div class="swiper-wrapper">
+                        <% testimonials.forEach(testimonial => { %>
+                            <div class="swiper-slide">
+                                <div class="testimonial-item">
+                                    <p><i class="bx bxs-quote-alt-left quote-icon-left"></i><%= testimonial.message %><i class="bx bxs-quote-alt-right quote-icon-right"></i></p>
+                                    <img src="assets/img/testimonials/<%= testimonial.profilepicture %>" class="testimonial-img" alt="">
+                                    <h3><%= testimonial.name %></h3>
+                                    <h4><%= testimonial.role %></h4>
+                                </div>
+                            </div><!-- End testimonial item -->
+                        <% }) %>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </section><!-- End Testimonials Section -->
 
 
     <!-- ======= F.A.Q Section ======= -->

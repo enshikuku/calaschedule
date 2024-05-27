@@ -6,7 +6,7 @@
             <% const today = new Date(); %>
             <% const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]; %>
             <% const currentDay = weekdays[today.getDay()]; %>
-            <% let classesForDay = studentClasses.filter(classItem => classItem.day_id === today.getDay()); %>
+            <% let classesForDay = studentClasses.filter(classItem => classItem.day_id === today.getDay()+1); %>
         
             <% if(classesForDay.length > 0) { %>
                 <% classesForDay.forEach((classItem, index) => { %>

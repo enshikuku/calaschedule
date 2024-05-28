@@ -171,9 +171,9 @@ app.post('/signup', async (req, res) => {
                             const mailData = {
                                 from: process.env.EMAIL,
                                 to: user.email,
-                                subject: 'Welcome to CALASCHEDULE - Your Personalized Class Scheduling Platform',
+                                subject: 'Your CALASCHEDULE OTP Code for Account Verification',
                                 text: `Dear ${user.name},\n\nWelcome to CALASCHEDULE! Your One-Time Password (OTP) for account verification is ${OTP}. This OTP will expire in 10 minutes.\n\nHappy scheduling!\n\nBest regards,\nThe CALASCHEDULE Team`
-                            }                            
+                            }
                             sendMail(mailData, (error) => {
                                 if (error) {
                                     console.error('Error sending email:', error)
@@ -251,7 +251,7 @@ app.post('/verify-otp', (req, res) => {
                         const mailData = {
                             from: process.env.EMAIL,
                             to: user.email,
-                            subject: 'Welcome to CALASCHEDULE - Your Personalized Class Scheduling Platform',
+                            subject: 'Welcome to CALASCHEDULE - Account Created',
                             text: `Dear ${user.name},\n\nWelcome to CALASCHEDULE! Your account has been successfully created. Start managing your class schedules and stay updated with any changes directly from your lecturers.\n\nIf you have any questions or need assistance, feel free to reach out to our support team.\n\nHappy scheduling!\n\nBest regards,\nThe CALASCHEDULE Team`
                         }
                         sendMail(mailData, (error) => {

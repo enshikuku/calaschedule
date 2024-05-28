@@ -370,6 +370,36 @@ app.get('/dashboard', (req, res) => {
     }
 })
 
+app.get('/courses', (req, res) => {
+    if (req.session.user_id) {
+        let checkifenroll = 'SELECT * FROM enrollments WHERE student_id = ?'
+        connection.query(checkifenroll, [req.session.user_id], (error, results) => {
+            if (error) {
+                console.error('Error querying enrollments:', error)
+                res.status(500).send('Error querying enrollments')
+                return
+            }
+            if (results.length > 0) {
+                let coursesSQL = 'SELECT c.course_id, c.course_code, c.name AS course_name, u.name AS lecturer_name, u.profilepicture AS lecturer_profilepicture, COALESCE(e.isactive, 0) AS isactive FROM courses c JOIN user u ON c.lecturer_id = u.user_id LEFT JOIN enrollments e ON c.course_id = e.course_id AND e.student_id = ? WHERE e.student_id IS NULL OR e.isactive = 1'
+                connection.query(
+                    coursesSQL, [req.session.user_id], (error, courses) => {
+                        if (error) {
+                            console.error('Error querying courses:', error)
+                            res.status(500).send('Error querying courses')
+                            return
+                        }
+                        res.render('courses', {courses: courses})
+                    }
+                )
+            } else {
+                res.redirect('/enroll')
+            }
+        })
+    } else {
+        res.redirect('/login')
+    }
+})
+
 app.get('/enroll', (req, res) => {
     if (req.session.user_id) {
         let coursesSQL = 'SELECT c.course_id, c.course_code, c.name AS course_name, u.name AS lecturer_name, u.profilepicture AS lecturer_profilepicture FROM courses c JOIN user u ON c.lecturer_id = u.user_id WHERE c.course_id NOT IN (SELECT course_id FROM enrollments WHERE student_id = ? AND isactive = 1)'
@@ -387,6 +417,7 @@ app.get('/enroll', (req, res) => {
         res.redirect('/login')
     }
 })
+
 app.post('/enroll', (req, res) => {
     if (req.session.user_id) {
         let student_id = req.session.user_id
@@ -403,7 +434,7 @@ app.post('/enroll', (req, res) => {
                 }
             })
         })
-        res.redirect('/dashboard')
+        res.redirect('/courses')
     } else {
         res.redirect('/login')
     }
@@ -444,7 +475,7 @@ app.post('/unenroll', (req, res) => {
             })
         })
         
-        res.redirect('/dashboard')
+        res.redirect('/courses')
     } else {
         res.redirect('/login')
     }

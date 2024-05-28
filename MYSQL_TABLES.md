@@ -27,8 +27,18 @@ CREATE TABLE enrollments (
     enrollment_id INT(11) AUTO_INCREMENT PRIMARY KEY,
     course_id INT(11),
     student_id VARCHAR(10),
+    isactive BOOL DEFAULT 1, -- Set the default value to 1 for active enrollments
     FOREIGN KEY (course_id) REFERENCES courses(course_id),
     FOREIGN KEY (student_id) REFERENCES user(user_id)
+);
+
+CREATE TABLE testimonials (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    role VARCHAR(100),
+    message TEXT NOT NULL,
+    image_url VARCHAR(255),
+    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE days (

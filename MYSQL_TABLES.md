@@ -1,3 +1,8 @@
+# Database Schema
+
+## OTP Table
+
+```sql
 CREATE TABLE otp (
     id INT(11) AUTO_INCREMENT PRIMARY KEY,
     otpcode VARCHAR(10),
@@ -5,8 +10,11 @@ CREATE TABLE otp (
     used VARCHAR(10) DEFAULT 'false',
     email VARCHAR(255)
 );
+```
 
+## User Table
 
+```sql
 CREATE TABLE user (
     user_id VARCHAR(10) PRIMARY KEY,
     name VARCHAR(100),
@@ -15,14 +23,22 @@ CREATE TABLE user (
     profilepicture VARCHAR(100) DEFAULT 'user.png',
     role VARCHAR(50) DEFAULT 'student'
 );
+```
 
+## Courses Table
+
+```sql
 CREATE TABLE courses (
     course_id INT(11) AUTO_INCREMENT PRIMARY KEY,
     course_code VARCHAR(10),
     name VARCHAR(100),
     lecturer_id VARCHAR(10) REFERENCES user(user_id)
 );
+```
 
+## Enrollments Table
+
+```sql
 CREATE TABLE enrollments (
     enrollment_id INT(11) AUTO_INCREMENT PRIMARY KEY,
     course_id INT(11),
@@ -31,7 +47,11 @@ CREATE TABLE enrollments (
     FOREIGN KEY (course_id) REFERENCES courses(course_id),
     FOREIGN KEY (student_id) REFERENCES user(user_id)
 );
+```
 
+## Testimonials Table
+
+```sql
 CREATE TABLE testimonials (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -40,18 +60,30 @@ CREATE TABLE testimonials (
     image_url VARCHAR(255),
     timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+```
 
+## Days Table
+
+```sql
 CREATE TABLE days (
     day_id SERIAL PRIMARY KEY,
-    name VARCHAR(20) -- 'Monday', 'Tuesday', etc.
+    name VARCHAR(20)
 );
+```
 
+## Rooms Table
+
+```sql
 CREATE TABLE rooms (
     room_id SERIAL PRIMARY KEY,
     name VARCHAR(50),
     capacity INT
 );
+```
 
+## Schedules Table
+
+```sql
 CREATE TABLE schedules (
     schedule_id SERIAL PRIMARY KEY,
     course_id INT REFERENCES courses(course_id),
@@ -61,3 +93,4 @@ CREATE TABLE schedules (
     room_id INT REFERENCES rooms(room_id),
     lecturer_id VARCHAR(10) REFERENCES user(user_id)
 );
+```

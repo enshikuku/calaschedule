@@ -659,6 +659,10 @@ table.course-toenroll {
   margin: 20px 0;
 }
 
+table {
+  text-wrap: none;
+}
+
 .course-toenroll th, .course-toenroll td {
   border: 1px solid #dddddd;
   text-align: left;
@@ -827,7 +831,8 @@ table.course-toenroll {
 
 .quote-container {
   text-align: left;
-  margin-top: 30px;
+  margin: 30px;
+  height: 100px;
 }
 
 #quote {

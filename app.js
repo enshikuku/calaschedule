@@ -727,7 +727,21 @@ app.get('/admin', (req, res) => {
 })
 
 app.get('/tutor-dash', (req, res) => {
-    red.render('tutor-dash')
+    if (req.session.user_id) {
+        let coursesSQL = 'SELECT c.course_code, c.name AS course_title, u.name AS lecturer_name, u.profilepicture AS lecturer_profilepicture FROM courses c JOIN user u ON c.lecturer_id = u.user_id WHERE c.lecturer_id = ?'
+        connection.query(
+            coursesSQL, [req.session.user_id], (error, courses) => {
+                if (error) {
+                    console.error('Error querying courses:', error)
+                    res.status(500).send('Error querying courses')
+                    return
+                }
+                res.render('tutor-dash', {courses: courses})
+            }
+        )
+    } else {
+        res.redirect('/login')
+    }
 })
 
 app.get('/logout', (req, res) => {

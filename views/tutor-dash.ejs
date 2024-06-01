@@ -1,1 +1,218 @@
-<h1>TUTOR DASH</h1>
+<%- include('partials/header') %>
+    <%- include('partials/nav') %>
+    <!-- ======= Hero Section ======= -->
+    <section id="hero" class="d-flex flex-column justify-content-end align-items-center">
+        <div id="heroCarousel" data-bs-interval="5000" class="container carousel carousel-fade" data-bs-ride="carousel">
+            <% const today = new Date(); %>
+            <% const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]; %>
+            <% const currentDay = weekdays[today.getDay()]; %>
+            <% let classesForDay = studentClasses.filter(classItem => classItem.day_id === today.getDay()+1); %>
+        
+            <% if(classesForDay.length > 0) { %>
+                <% classesForDay.forEach((classItem, index) => { %>
+                    <% if(index === 0){ %>
+                        <div class="carousel-item active">
+                            <div class="carousel-container">
+                                <h2 class="animate__animated animate__fadeInDown"><%= classesForDay.length %> Classes on <%= currentDay %>:</h2>
+                                <p>
+                                    <% 
+                                        switch (index) {
+                                            case 0:
+                                                %> First <% 
+                                                break;
+                                            case 1:
+                                                %> Second <% 
+                                                break;
+                                            case 2:
+                                                %> Third <% 
+                                                break;
+                                            case 3:
+                                                %> Fourth <% 
+                                                break;
+                                            case 4:
+                                                %> Fifth <% 
+                                                break;
+                                            case 5:
+                                                %> Sixth <% 
+                                                break;
+                                        } 
+                                    %> Class <%= classItem.course_code %> - At <%= classItem.start_time %>, Venue: <%= classItem.venue %>
+                                </p>
+                                <a href="#timetable" class="btn-get-started animate__animated animate__fadeInUp scrollto">View Full Timetable</a>
+                            </div>
+                        </div>
+                    <% } else { %>
+                        <div class="carousel-item">
+                            <div class="carousel-container">
+                                <h2 class="animate__animated animate__fadeInDown"><%= classesForDay.length %> Classes on <%= currentDay %>:</h2>
+                                <p>
+                                    <% 
+                                        switch (index) {
+                                            case 0:
+                                                %> First <% 
+                                                break;
+                                            case 1:
+                                                %> Second <% 
+                                                break;
+                                            case 2:
+                                                %> Third <% 
+                                                break;
+                                            case 3:
+                                                %> Fourth <% 
+                                                break;
+                                            case 4:
+                                                %> Fifth <% 
+                                                break;
+                                            case 5:
+                                                %> Sixth <% 
+                                                break;
+                                        } 
+                                    %> Class <%= classItem.course_code %> - At <%= classItem.start_time %>, Venue: <%= classItem.venue %>
+                                </p>
+                                <a href="#timetable" class="btn-get-started animate__animated animate__fadeInUp scrollto">View Full Timetable</a>
+                            </div>
+                        </div>
+                    <% } %>
+                <% }); %>
+            <% } else { %>
+                <div class="carousel-item active">
+                    <div class="carousel-container">
+                        <h2 class="animate__animated animate__fadeInDown">No classes Today</h2>
+                        <a href="#timetable" class="btn-get-started animate__animated animate__fadeInUp scrollto">View Full Timetable</a>
+                    </div>
+                </div>
+                <div class="carousel-item">
+                    <div class="carousel-container">
+                        <h2 class="animate__animated animate__fadeInDown">Take a rest. Wait for tomorrow's classes</h2>
+                        <a href="#timetable" class="btn-get-started animate__animated animate__fadeInUp scrollto">View Full Timetable</a>
+                    </div>
+                </div>
+            <% } %>
+        
+            <a class="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon bx bx-chevron-left" aria-hidden="true"></span>
+            </a>
+        
+            <a class="carousel-control-next" href="#heroCarousel" role="button" data-bs-slide="next">
+                <span class="carousel-control-next-icon bx bx-chevron-right" aria-hidden="true"></span>
+            </a>
+        </div>
+        
+        
+        <svg class="hero-waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+            viewBox="0 24 150 28 " preserveAspectRatio="none">
+            <defs>
+                <path id="wave-path"
+                    d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z">
+            </defs>
+            <g class="wave1">
+                <use xlink:href="#wave-path" x="50" y="3" fill="rgba(255,255,255, .1)">
+            </g>
+            <g class="wave2">
+                <use xlink:href="#wave-path" x="50" y="0" fill="rgba(255,255,255, .2)">
+            </g>
+            <g class="wave3">
+                <use xlink:href="#wave-path" x="50" y="9" fill="#fff">
+            </g>
+        </svg>
+    </section><!-- End Hero -->
+    <main id="main">
+        <!-- ======= About Section ======= -->
+        <section id="timetable" class="about">
+            
+            <div class="container">
+                <div class="section-title" data-aos="zoom-out">
+                    <h2>Timetable</h2>
+                    <p>Today is <strong><%= weekdays[today.getDay()] %></strong></p>
+                    <div class="quote-container" style="height: 30px; color: aliceblue;">
+                        <p><span id="quote"></span></p>
+                    </div>
+                </div><div class="row content" data-aos="fade-up">
+                    <% days.forEach(day => { %>
+                        <div>
+                            <h2><%= day.name %></h2>
+                            <div>
+                                <% let classesForDay = studentClasses.filter(classItem => classItem.day_id === day.day_id); %>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <% if (classesForDay.length > 0) { %>
+                                            <tr>
+                                                <th scope="col">Time</th>
+                                                <th scope="col">Class</th>
+                                                <th scope="col">Venue</th>
+                                            </tr>
+                                        <% } else { %>
+                                            <tr>
+                                                <th colspan="3" scope="row" style="font-size: 18px;">No classes on <%= day.name %></th>
+                                            </tr>
+                                        <% } %>
+                                    </thead>
+                                    <tbody>
+                                        <% classesForDay.forEach(classItem => { %>
+                                            <tr>
+                                                <td><%= classItem.start_time %></td>
+                                                <td><%= classItem.course_code %></td>
+                                                <td><%= classItem.venue %></td>
+                                            </tr>
+                                        <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    <% }) %>
+                </div>
+                
+            </div>
+            
+        </section><!-- End About Section -->
+<%- include('partials/contact') %>
+</main><!-- End #main -->
+
+<script>
+    const quotes = [
+        '"Education is the passport to the future, for tomorrow belongs to those who prepare for it today." - Malcolm X',
+        '"The only true wisdom is in knowing you know nothing." - Socrates',
+        '"Education is not the filling of a pail, but the lighting of a fire." - W.B. Yeats',
+        '"The function of education is to teach one to think intensively and to think critically. Intelligence plus character - that is the goal of true education." - Martin Luther King Jr.',
+        '"An investment in knowledge pays the best interest." - Benjamin Franklin',
+        '"The beautiful thing about learning is that no one can take it away from you." - B.B. King',
+        '"Live as if you were to die tomorrow. Learn as if you were to live forever." - Mahatma Gandhi',
+        '"Education is the most powerful weapon which you can use to change the world." - Nelson Mandela',
+        '"The roots of education are bitter, but the fruit is sweet." - Aristotle',
+        '"Education is not preparation for life; education is life itself." - John Dewey',
+        '"I am not a teacher, but an awakener." - Robert Frost',
+        '"The mind is not a vessel to be filled, but a fire to be kindled." - Plutarch',
+        '"Education is the key to unlock the golden door of freedom." - George Washington Carver',
+        '"The great aim of education is not knowledge but action." - Herbert Spencer',
+        '"Learning never exhausts the mind." - Leonardo da Vinci',
+        '"Education is what remains after one has forgotten what one has learned in school." - Albert Einstein',
+        '"The best way to predict your future is to create it." - Abraham Lincoln',
+        '"The only person who is educated is the one who has learned how to learn and change." - Carl Rogers',
+        '"Education is the movement from darkness to light." - Allan Bloom',
+        '"Education is the foundation upon which we build our future." - Christine Gregoire'
+    ]
+
+    const quoteElement = document.getElementById('quote');
+
+    const currentQuoteIndex = () => Math.floor(Math.random() * 21);
+
+    function typeQuote() {
+        const quote = quotes[currentQuoteIndex()];
+        let i = 0;
+        const typingInterval = setInterval(() => {
+            if (i <= quote.length) {
+                quoteElement.textContent = quote.slice(0, i);
+                i++;
+            } else {
+                clearInterval(typingInterval);
+                setTimeout(() => {
+                    typeQuote();
+                }, 3000); // Wait for 5 seconds before typing the next quote
+            }
+        }, 5); 
+    }
+
+    typeQuote();
+
+</script>
+<%- include('partials/footer') %>

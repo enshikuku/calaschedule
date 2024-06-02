@@ -2,103 +2,7 @@
     <%- include('partials/nav') %>
     <!-- ======= Hero Section ======= -->
     <section id="hero" class="d-flex flex-column justify-content-end align-items-center">
-        <div id="heroCarousel" data-bs-interval="5000" class="container carousel carousel-fade" data-bs-ride="carousel">
-            <% const today = new Date(); %>
-            <% const weekdays = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]; %>
-            <% const currentDay = weekdays[today.getDay()]; %>
-            <% let classesForDay = studentClasses.filter(classItem => classItem.day_id === today.getDay()+1); %>
-        
-            <% if(classesForDay.length > 0) { %>
-                <% classesForDay.forEach((classItem, index) => { %>
-                    <% if(index === 0){ %>
-                        <div class="carousel-item active">
-                            <div class="carousel-container">
-                                <h2 class="animate__animated animate__fadeInDown"><%= classesForDay.length %> Classes on <%= currentDay %>:</h2>
-                                <p>
-                                    <% 
-                                        switch (index) {
-                                            case 0:
-                                                %> First <% 
-                                                break;
-                                            case 1:
-                                                %> Second <% 
-                                                break;
-                                            case 2:
-                                                %> Third <% 
-                                                break;
-                                            case 3:
-                                                %> Fourth <% 
-                                                break;
-                                            case 4:
-                                                %> Fifth <% 
-                                                break;
-                                            case 5:
-                                                %> Sixth <% 
-                                                break;
-                                        } 
-                                    %> Class <%= classItem.course_code %> - At <%= classItem.start_time %>, Venue: <%= classItem.venue %>
-                                </p>
-                                <a href="#timetable" class="btn-get-started animate__animated animate__fadeInUp scrollto">View Full Timetable</a>
-                            </div>
-                        </div>
-                    <% } else { %>
-                        <div class="carousel-item">
-                            <div class="carousel-container">
-                                <h2 class="animate__animated animate__fadeInDown"><%= classesForDay.length %> Classes on <%= currentDay %>:</h2>
-                                <p>
-                                    <% 
-                                        switch (index) {
-                                            case 0:
-                                                %> First <% 
-                                                break;
-                                            case 1:
-                                                %> Second <% 
-                                                break;
-                                            case 2:
-                                                %> Third <% 
-                                                break;
-                                            case 3:
-                                                %> Fourth <% 
-                                                break;
-                                            case 4:
-                                                %> Fifth <% 
-                                                break;
-                                            case 5:
-                                                %> Sixth <% 
-                                                break;
-                                        } 
-                                    %> Class <%= classItem.course_code %> - At <%= classItem.start_time %>, Venue: <%= classItem.venue %>
-                                </p>
-                                <a href="#timetable" class="btn-get-started animate__animated animate__fadeInUp scrollto">View Full Timetable</a>
-                            </div>
-                        </div>
-                    <% } %>
-                <% }); %>
-            <% } else { %>
-                <div class="carousel-item active">
-                    <div class="carousel-container">
-                        <h2 class="animate__animated animate__fadeInDown">No classes Today</h2>
-                        <a href="#timetable" class="btn-get-started animate__animated animate__fadeInUp scrollto">View Full Timetable</a>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="carousel-container">
-                        <h2 class="animate__animated animate__fadeInDown">Take a rest. Wait for tomorrow's classes</h2>
-                        <a href="#timetable" class="btn-get-started animate__animated animate__fadeInUp scrollto">View Full Timetable</a>
-                    </div>
-                </div>
-            <% } %>
-        
-            <a class="carousel-control-prev" href="#heroCarousel" role="button" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon bx bx-chevron-left" aria-hidden="true"></span>
-            </a>
-        
-            <a class="carousel-control-next" href="#heroCarousel" role="button" data-bs-slide="next">
-                <span class="carousel-control-next-icon bx bx-chevron-right" aria-hidden="true"></span>
-            </a>
-        </div>
-        
-        
+        <%- include('partials/slides') %>
         <svg class="hero-waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
             viewBox="0 24 150 28 " preserveAspectRatio="none">
             <defs>
@@ -118,101 +22,219 @@
     </section><!-- End Hero -->
     <main id="main">
         <!-- ======= About Section ======= -->
-        <section id="timetable" class="about">
-            
+        <section id="about" class="about">
             <div class="container">
                 <div class="section-title" data-aos="zoom-out">
-                    <h2>Timetable</h2>
-                    <p>Today is <strong><%= weekdays[today.getDay()] %></strong></p>
-                    <div class="quote-container" style="height: 30px; color: aliceblue;">
-                        <p><span id="quote"></span></p>
+                    <h2>About CALASCHEDULE</h2>
+                    <p>Empowering Education</p>
+                </div>
+                <div class="row content" data-aos="fade-up">
+                    <div class="col-lg-6">
+                        <p>
+                            CALASCHEDULE is a cutting-edge timetable application designed to revolutionize the educational experience for both students and Lecturers. Our platform simplifies class management, allowing users to effortlessly organize their schedules and assignments.
+                        </p>
+                        <ul>
+                            <li><i class="ri-check-double-line"></i> Effortlessly manage classes and assignments</li>
+                            <li><i class="ri-check-double-line"></i> Seamlessly adapt to changes in schedule</li>
+                            <li><i class="ri-check-double-line"></i> Foster collaboration and efficiency in learning</li>
+                        </ul>
                     </div>
-                </div><div class="row content" data-aos="fade-up">
-                    <% days.forEach(day => { %>
-                        <div>
-                            <h2><%= day.name %></h2>
-                            <div>
-                                <% let classesForDay = studentClasses.filter(classItem => classItem.day_id === day.day_id); %>
-                                <table class="table table-striped">
-                                    <thead>
-                                        <% if (classesForDay.length > 0) { %>
-                                            <tr>
-                                                <th scope="col">Time</th>
-                                                <th scope="col">Class</th>
-                                                <th scope="col">Venue</th>
-                                            </tr>
-                                        <% } else { %>
-                                            <tr>
-                                                <th colspan="3" scope="row" style="font-size: 18px;">No classes on <%= day.name %></th>
-                                            </tr>
-                                        <% } %>
-                                    </thead>
-                                    <tbody>
-                                        <% classesForDay.forEach(classItem => { %>
-                                            <tr>
-                                                <td><%= classItem.start_time %></td>
-                                                <td><%= classItem.course_code %></td>
-                                                <td><%= classItem.venue %></td>
-                                            </tr>
-                                        <% }); %>
-                                    </tbody>
-                                </table>
+                    <div class="col-lg-6 pt-4 pt-lg-0">
+                        <p>
+                            At CALASCHEDULE, we believe in creating a streamlined learning experience that empowers individuals to achieve their academic goals. Our platform is built on principles of flexibility, accessibility, and innovation, ensuring that students and Lecturers can focus on what truly matters - learning and growth.
+                        </p>
+                        <a href="#" class="btn-learn-more">Learn More</a>
+                    </div>
+                </div>
+            </div>
+        </section><!-- End About Section -->
+
+        <!-- ======= Testimonials Section ======= -->
+        <section id="testimonials" class="testimonials">
+            <div class="container">
+                <div class="section-title" data-aos="zoom-out">
+                    <h2>Testimonials</h2>
+                    <p>What they are saying about us</p>
+                </div>
+                <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
+                    <div class="swiper-wrapper">
+                        <% testimonials.forEach(testimonial => { %>
+                            <div class="swiper-slide">
+                                <div class="testimonial-item">
+                                    <p><i class="bx bxs-quote-alt-left quote-icon-left"></i><%= testimonial.message %><i class="bx bxs-quote-alt-right quote-icon-right"></i></p>
+                                    <img src="assets/img/testimonials/<%= testimonial.profilepicture %>" class="testimonial-img" alt="">
+                                    <h3><%= testimonial.name %></h3>
+                                    <h4><%= testimonial.role %></h4>
+                                </div>
+                            </div><!-- End testimonial item -->
+                        <% }) %>
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+            </div>
+        </section><!-- End Testimonials Section -->
+
+
+    <!-- ======= F.A.Q Section ======= -->
+<section id="faq" class="faq">
+  <div class="container">
+
+      <div class="section-title" data-aos="zoom-out">
+          <h2>Frequently Asked Questions</h2>
+          <p>Got questions? We've got answers.</p>
+      </div>
+
+      <ul class="faq-list">
+
+          <li>
+              <div data-bs-toggle="collapse" class="collapsed question" href="#faq1">How do I sign up for CALASCHEDULE? <i class="bi bi-chevron-down icon-show"></i><i class="bi bi-chevron-up icon-close"></i></div>
+              <div id="faq1" class="collapse" data-bs-parent=".faq-list">
+                  <p>
+                      Signing up for CALASCHEDULE is easy! Just visit our website and click on the "Sign Up" button. Follow the prompts to create your account with a valid email address and password.
+                  </p>
+              </div>
+          </li>
+
+          <li>
+              <div data-bs-toggle="collapse" href="#faq2" class="collapsed question">Is CALASCHEDULE free to use? <i class="bi bi-chevron-down icon-show"></i><i class="bi bi-chevron-up icon-close"></i></div>
+              <div id="faq2" class="collapse" data-bs-parent=".faq-list">
+                  <p>
+                      Yes, CALASCHEDULE offers a free version with basic features. However, we also offer premium plans with additional functionalities for those who need more advanced scheduling capabilities.
+                  </p>
+              </div>
+          </li>
+
+          <li>
+              <div data-bs-toggle="collapse" href="#faq3" class="collapsed question">Can I use CALASCHEDULE on my mobile device? <i class="bi bi-chevron-down icon-show"></i><i class="bi bi-chevron-up icon-close"></i></div>
+              <div id="faq3" class="collapse" data-bs-parent=".faq-list">
+                  <p>
+                      Absolutely! CALASCHEDULE is fully optimized for mobile devices, so you can access your schedule and manage your classes on the go. Simply download our app from the App Store or Google Play Store.
+                  </p>
+              </div>
+          </li>
+
+          <li>
+              <div data-bs-toggle="collapse" href="#faq4" class="collapsed question">How secure is my data on CALASCHEDULE? <i class="bi bi-chevron-down icon-show"></i><i class="bi bi-chevron-up icon-close"></i></div>
+              <div id="faq4" class="collapse" data-bs-parent=".faq-list">
+                  <p>
+                      We take the security and privacy of your data very seriously. CALASCHEDULE employs industry-standard encryption protocols to safeguard your information. Rest assured that your data is safe with us.
+                  </p>
+              </div>
+          </li>
+
+          <li>
+              <div data-bs-toggle="collapse" href="#faq5" class="collapsed question">Can I reschedule classes using CALASCHEDULE? <i class="bi bi-chevron-down icon-show"></i><i class="bi bi-chevron-up icon-close"></i></div>
+              <div id="faq5" class="collapse" data-bs-parent=".faq-list">
+                  <p>
+                      Yes, CALASCHEDULE allows both students and tutors to reschedule classes easily. Simply navigate to your class schedule, select the class you wish to reschedule, and choose a new available time slot.
+                  </p>
+              </div>
+          </li>
+
+          <li>
+              <div data-bs-toggle="collapse" href="#faq6" class="collapsed question">What if I encounter technical issues while using CALASCHEDULE? <i class="bi bi-chevron-down icon-show"></i><i class="bi bi-chevron-up icon-close"></i></div>
+              <div id="faq6" class="collapse" data-bs-parent=".faq-list">
+                  <p>
+                      If you experience any technical issues or have questions about using CALASCHEDULE, our support team is here to help. You can reach out to us through our contact page, and we'll assist you promptly.
+                  </p>
+              </div>
+          </li>
+
+          <li>
+              <div data-bs-toggle="collapse" href="#faq7" class="collapsed question">Does CALASCHEDULE integrate with other calendar applications? <i class="bi bi-chevron-down icon-show"></i><i class="bi bi-chevron-up icon-close"></i></div>
+              <div id="faq7" class="collapse" data-bs-parent=".faq-list">
+                  <p>
+                      Currently, CALASCHEDULE operates as a standalone application and does not offer direct integration with external calendar applications. However, our user-friendly interface allows for easy manual input of class schedules and appointments, ensuring you can keep track of your timetable efficiently within CALASCHEDULE itself.
+                  </p>
+              </div>
+          </li>
+
+      </ul>
+
+  </div>
+</section><!-- End F.A.Q Section -->
+
+    <!-- ======= Team Section ======= -->
+    <section id="team" class="team">
+        <div class="container">
+            <div class="section-title" data-aos="zoom-out">
+                <h2>Team</h2>
+                <p>Our Hardworking Team</p>
+            </div>
+            <div class="row">
+                <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+                    <div class="member" data-aos="fade-up">
+                        <div class="member-img">
+                            <img src="assets/img/team/team-1.jpg" class="img-fluid" alt="">
+                            <div class="social">
+                                <a href=""><i class="bi bi-twitter"></i></a>
+                                <a href=""><i class="bi bi-facebook"></i></a>
+                                <a href=""><i class="bi bi-instagram"></i></a>
+                                <a href=""><i class="bi bi-linkedin"></i></a>
                             </div>
                         </div>
-                    <% }) %>
+                        <div class="member-info">
+                            <h4>Walter White</h4>
+                            <span>Chief Executive Officer</span>
+                        </div>
+                    </div>
                 </div>
-                
+                <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+                    <div class="member" data-aos="fade-up" data-aos-delay="100">
+                        <div class="member-img">
+                            <img src="assets/img/team/team-2.jpg" class="img-fluid" alt="">
+                            <div class="social">
+                                <a href=""><i class="bi bi-twitter"></i></a>
+                                <a href=""><i class="bi bi-facebook"></i></a>
+                                <a href=""><i class="bi bi-instagram"></i></a>
+                                <a href=""><i class="bi bi-linkedin"></i></a>
+                            </div>
+                        </div>
+                        <div class="member-info">
+                            <h4>Sarah Jhonson</h4>
+                            <span>Product Manager</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+                    <div class="member" data-aos="fade-up" data-aos-delay="200">
+                        <div class="member-img">
+                            <img src="assets/img/team/team-3.jpg" class="img-fluid" alt="">
+                            <div class="social">
+                                <a href=""><i class="bi bi-twitter"></i></a>
+                                <a href=""><i class="bi bi-facebook"></i></a>
+                                <a href=""><i class="bi bi-instagram"></i></a>
+                                <a href=""><i class="bi bi-linkedin"></i></a>
+                            </div>
+                        </div>
+                        <div class="member-info">
+                            <h4>William Anderson</h4>
+                            <span>CTO</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+                    <div class="member" data-aos="fade-up" data-aos-delay="300">
+                        <div class="member-img">
+                            <img src="assets/img/team/team-4.jpg" class="img-fluid" alt="">
+                            <div class="social">
+                                <a href=""><i class="bi bi-twitter"></i></a>
+                                <a href=""><i class="bi bi-facebook"></i></a>
+                                <a href=""><i class="bi bi-instagram"></i></a>
+                                <a href=""><i class="bi bi-linkedin"></i></a>
+                            </div>
+                        </div>
+                        <div class="member-info">
+                            <h4>Amanda Jepson</h4>
+                            <span>Accountant</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
-        </section><!-- End About Section -->
-<%- include('partials/contact') %>
+        </div>
+    </section><!-- End Team Section -->
+
+    <%- include('partials/contact') %>
+
 </main><!-- End #main -->
-
-<script>
-    const quotes = [
-        '"Education is the passport to the future, for tomorrow belongs to those who prepare for it today." - Malcolm X',
-        '"The only true wisdom is in knowing you know nothing." - Socrates',
-        '"Education is not the filling of a pail, but the lighting of a fire." - W.B. Yeats',
-        '"The function of education is to teach one to think intensively and to think critically. Intelligence plus character - that is the goal of true education." - Martin Luther King Jr.',
-        '"An investment in knowledge pays the best interest." - Benjamin Franklin',
-        '"The beautiful thing about learning is that no one can take it away from you." - B.B. King',
-        '"Live as if you were to die tomorrow. Learn as if you were to live forever." - Mahatma Gandhi',
-        '"Education is the most powerful weapon which you can use to change the world." - Nelson Mandela',
-        '"The roots of education are bitter, but the fruit is sweet." - Aristotle',
-        '"Education is not preparation for life; education is life itself." - John Dewey',
-        '"I am not a teacher, but an awakener." - Robert Frost',
-        '"The mind is not a vessel to be filled, but a fire to be kindled." - Plutarch',
-        '"Education is the key to unlock the golden door of freedom." - George Washington Carver',
-        '"The great aim of education is not knowledge but action." - Herbert Spencer',
-        '"Learning never exhausts the mind." - Leonardo da Vinci',
-        '"Education is what remains after one has forgotten what one has learned in school." - Albert Einstein',
-        '"The best way to predict your future is to create it." - Abraham Lincoln',
-        '"The only person who is educated is the one who has learned how to learn and change." - Carl Rogers',
-        '"Education is the movement from darkness to light." - Allan Bloom',
-        '"Education is the foundation upon which we build our future." - Christine Gregoire'
-    ]
-
-    const quoteElement = document.getElementById('quote');
-
-    const currentQuoteIndex = () => Math.floor(Math.random() * 21);
-
-    function typeQuote() {
-        const quote = quotes[currentQuoteIndex()];
-        let i = 0;
-        const typingInterval = setInterval(() => {
-            if (i <= quote.length) {
-                quoteElement.textContent = quote.slice(0, i);
-                i++;
-            } else {
-                clearInterval(typingInterval);
-                setTimeout(() => {
-                    typeQuote();
-                }, 3000); // Wait for 5 seconds before typing the next quote
-            }
-        }, 5); 
-    }
-
-    typeQuote();
-
-</script>
 <%- include('partials/footer') %>

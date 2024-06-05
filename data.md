@@ -156,8 +156,6 @@ insert into `testimonials` (`message`, `name`, `profilepicture`, `role`) values
 
 ```
 
-
-
 ### Additional Users
 ```sql
 INSERT INTO user (user_id, name, email, password, profilepicture, role, dpt_code, timestamp)

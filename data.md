@@ -3,17 +3,7 @@
 ### Courses
 
 ```sql
-insert into `courses` (`course_code`, `course_id`, `lecturer_id`, `name`) values 
-('COMP 421', 1, '124', 'Cloud Computing Technologies'), 
-('COMP 422', 2, '782', 'Engineering and Software Law'), 
-('COMP 423', 3, '739', 'Simulations and Modelling'), 
-('COMP 424', 4, '349', 'Expert System'), 
-('COMP 425', 5, '329', 'Network Security and Cryptography'), 
-('COMP 426', 6, '498', 'Mobile Application Development'), 
-('COMP 427', 7, '505', 'Neural Networks'), 
-('COMP 428', 8, '932', 'Advanced Computer Architecture'), 
-('COMP 429', 9, '345', 'Advanced Programming'), 
-('COMP 499', 10, '630', 'Industrial Attachment');
+
 ```
 
 ### Users

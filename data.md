@@ -34,6 +34,25 @@ VALUES
 (739, 'Prof. Beatrice Were', 'beatrice.were@calaschedule.ac.ke', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '3.png', 1, 2, '2024-08-28 10:48:04');
 ```
 
+
+### Additional Users
+
+```sql
+INSERT INTO user (user_id, name, email, password, profilepicture, role, dpt_code, timestamp)
+SELECT 
+    2000 + seq.seq AS user_id,
+    names.name AS name,
+    CONCAT(REPLACE(names.name, ' ', '.'), '@calaschedule.co.ke') AS email,
+    '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu' AS password,
+    'user.png' AS profilepicture,
+    0 AS role,
+    FLOOR(RAND() * 3) + 1 AS dpt_code,
+    DATE_ADD('2024-08-15 00:00:00', INTERVAL FLOOR(RAND() * 15) DAY) AS timestamp
+FROM
+    (SELECT seq, kenyan_names.name FROM seq_1_to_150 AS seq CROSS JOIN (SELECT 'Brian Kipkoech', 'Faith Wanjiru', 'Kevin Kamau', 'Mercy Chebet', 'Peter Omondi', 'Rose Achieng', 'David Njoroge', 'Grace Mwangi', 'John Kimani', 'Lilian Nyambura', 'Stephen Kiptoo', 'Susan Akinyi', 'Michael Otieno', 'Catherine Wangari', 'Josephat Njoroge', 'Jane Auma', 'Paul Waweru', 'Ruth Nduta', 'James Maina', 'Mary Atieno', 'Andrew Ochieng', 'Margaret Wambui', 'Patrick Kiprono', 'Joyce Njeri', 'Francis Musyoka', 'Caroline Chepkorir', 'Daniel Kariuki', 'Hellen Nekesa', 'Samuel Mutua', 'Esther Muthoni', 'Beatrice Kemunto', 'Victor Kiprop', 'Grace Njeri', 'Isaac Nyakundi', 'Lucy Muthoni', 'Dennis Kiptoo', 'Juliet Achieng', 'Kennedy Kimani', 'Sylvia Wangui', 'Felix Omondi', 'Eunice Wambui', 'Collins Ochieng', 'Nancy Chepkemoi', 'Vincent Rotich', 'Janet Chebet', 'Benson Kipchirchir', 'Ann Muthoni', 'Simon Kiptoo', 'Tabitha Chepkorir', 'Peter Kamau', 'Naomi Cherono', 'Richard Kiplagat', 'Priscilla Wanjiku', 'Moses Onyango', 'Emily Moraa', 'Joshua Njoroge', 'Agnes Wangari', 'Patrick Kibet', 'Gladys Achieng', 'Philip Kiprotich', 'Pamela Akinyi', 'Eric Ouma', 'Janet Chepchumba', 'Moses Kimutai', 'Tabitha Wangari', 'Joseph Mwangi', 'Carol Njeri', 'Kelvin Omondi', 'Diana Kemunto', 'Collins Kipkoech', 'Sheila Njeri', 'Kennedy Ochieng', 'Dorcas Chepkoech', 'Robert Kipruto', 'Miriam Auma', 'Fredrick Mutua', 'Sylvia Chebet', 'Derrick Kipkorir', 'Lucy Wambui', 'Timothy Kiptoo', 'Esther Chepkemoi', 'Patrick Kiptoo', 'Rosemary Nyambura', 'Benson Kipruto', 'Irene Njeri', 'Pauline Chepkurui', 'Johnson Nyaga', 'Faith Jebet', 'Anthony Karanja', 'Beatrice Njoki', 'Humphrey Ochieng', 'Janet Chepngeno', 'Edwin Kipchoge', 'Mercy Jepchirchir', 'Solomon Kimani', 'Agnes Nyambura', 'Victor Kiprono', 'Gladys Chepkoech', 'Hillary Rotich', 'Caroline Muthoni', 'Mark Kipkemoi', 'Lydia Chebet', 'Bernard Kiptoo', 'Faith Wairimu', 'Brian Kiprop', 'Mercy Chemutai', 'Dominic Kipkorir', 'Naomi Wangari', 'Timothy Kipchirchir', 'Brenda Chepkemoi', 'Andrew Kimutai', 'Dorcas Cheptoo', 'Collins Cheruiyot', 'Jane Chepkoech', 'Kennedy Omondi', 'Lilian Chebet', 'Peter Koech', 'Miriam Wanjiru', 'Francis Kibet', 'Sylvia Chepkoech', 'Elijah Kipruto', 'Rose Wangui', 'Kevin Kiplagat', 'Susan Chepkoech', 'Moses Kiprotich', 'Grace Chepkorir', 'Benson Kirui', 'Judith Chepngeno', 'James Kipkemoi', 'Beatrice Jepchirchir', 'Samuel Kipchumba', 'Diana Wangari', 'Bernard Kiptoo', 'Florence Chebet', 'Vincent Kipchirchir', 'Janet Chepkorir', 'Isaac Kipkoech', 'Agnes Chepkoech', 'Josephat Kiprono', 'Lucy Jepchumba', 'Daniel Kipchirchir', 'Faith Chepkorir', 'Robert Kipkirui', 'Mercy Chepkoech', 'Simon Kipkoech', 'Gladys Jepchirchir', 'Joshua Kipkorir', 'Priscilla Chebet', 'Moses Kiptoo', 'Caroline Chepkoech') AS kenyan_names(name)) AS names;
+```
+
+
 ### Days
 
 ```sql
@@ -86,21 +105,4 @@ insert into `testimonials` (`message`, `name`, `profilepicture`, `role`) values
 ('CALASCHEDULE makes coordinating group study sessions easy, helping our study group stay organized and focused on goals.', 'Romans Kiplagat', 'romans.jpg', 'Student'), 
 ('CALASCHEDULE stands out for its user-friendly interface and robust features. It\'s a game-changer for students and Lecturers.', 'Johua Okayo', 'okayo.jpg', 'Student'), 
 ('As a busy Lecturer, CALASCHEDULE is a lifesaver. Managing classes and appointments is easier, freeing up time for teaching.', 'Tom Olando', 'tom.jpg', 'Lecturer');
-```
-
-### Additional Users
-
-```sql
-INSERT INTO user (user_id, name, email, password, profilepicture, role, dpt_code, timestamp)
-SELECT 
-    2000 + seq.seq AS user_id,
-    names.name AS name,
-    CONCAT(REPLACE(names.name, ' ', '.'), '@calaschedule.co.ke') AS email,
-    '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu' AS password,
-    'user.png' AS profilepicture,
-    0 AS role,
-    FLOOR(RAND() * 3) + 1 AS dpt_code,
-    DATE_ADD('2024-08-15 00:00:00', INTERVAL FLOOR(RAND() * 15) DAY) AS timestamp
-FROM
-    (SELECT seq, kenyan_names.name FROM seq_1_to_150 AS seq CROSS JOIN (SELECT 'Brian Kipkoech', 'Faith Wanjiru', 'Kevin Kamau', 'Mercy Chebet', 'Peter Omondi', 'Rose Achieng', 'David Njoroge', 'Grace Mwangi', 'John Kimani', 'Lilian Nyambura', 'Stephen Kiptoo', 'Susan Akinyi', 'Michael Otieno', 'Catherine Wangari', 'Josephat Njoroge', 'Jane Auma', 'Paul Waweru', 'Ruth Nduta', 'James Maina', 'Mary Atieno', 'Andrew Ochieng', 'Margaret Wambui', 'Patrick Kiprono', 'Joyce Njeri', 'Francis Musyoka', 'Caroline Chepkorir', 'Daniel Kariuki', 'Hellen Nekesa', 'Samuel Mutua', 'Esther Muthoni', 'Beatrice Kemunto', 'Victor Kiprop', 'Grace Njeri', 'Isaac Nyakundi', 'Lucy Muthoni', 'Dennis Kiptoo', 'Juliet Achieng', 'Kennedy Kimani', 'Sylvia Wangui', 'Felix Omondi', 'Eunice Wambui', 'Collins Ochieng', 'Nancy Chepkemoi', 'Vincent Rotich', 'Janet Chebet', 'Benson Kipchirchir', 'Ann Muthoni', 'Simon Kiptoo', 'Tabitha Chepkorir', 'Peter Kamau', 'Naomi Cherono', 'Richard Kiplagat', 'Priscilla Wanjiku', 'Moses Onyango', 'Emily Moraa', 'Joshua Njoroge', 'Agnes Wangari', 'Patrick Kibet', 'Gladys Achieng', 'Philip Kiprotich', 'Pamela Akinyi', 'Eric Ouma', 'Janet Chepchumba', 'Moses Kimutai', 'Tabitha Wangari', 'Joseph Mwangi', 'Carol Njeri', 'Kelvin Omondi', 'Diana Kemunto', 'Collins Kipkoech', 'Sheila Njeri', 'Kennedy Ochieng', 'Dorcas Chepkoech', 'Robert Kipruto', 'Miriam Auma', 'Fredrick Mutua', 'Sylvia Chebet', 'Derrick Kipkorir', 'Lucy Wambui', 'Timothy Kiptoo', 'Esther Chepkemoi', 'Patrick Kiptoo', 'Rosemary Nyambura', 'Benson Kipruto', 'Irene Njeri', 'Pauline Chepkurui', 'Johnson Nyaga', 'Faith Jebet', 'Anthony Karanja', 'Beatrice Njoki', 'Humphrey Ochieng', 'Janet Chepngeno', 'Edwin Kipchoge', 'Mercy Jepchirchir', 'Solomon Kimani', 'Agnes Nyambura', 'Victor Kiprono', 'Gladys Chepkoech', 'Hillary Rotich', 'Caroline Muthoni', 'Mark Kipkemoi', 'Lydia Chebet', 'Bernard Kiptoo', 'Faith Wairimu', 'Brian Kiprop', 'Mercy Chemutai', 'Dominic Kipkorir', 'Naomi Wangari', 'Timothy Kipchirchir', 'Brenda Chepkemoi', 'Andrew Kimutai', 'Dorcas Cheptoo', 'Collins Cheruiyot', 'Jane Chepkoech', 'Kennedy Omondi', 'Lilian Chebet', 'Peter Koech', 'Miriam Wanjiru', 'Francis Kibet', 'Sylvia Chepkoech', 'Elijah Kipruto', 'Rose Wangui', 'Kevin Kiplagat', 'Susan Chepkoech', 'Moses Kiprotich', 'Grace Chepkorir', 'Benson Kirui', 'Judith Chepngeno', 'James Kipkemoi', 'Beatrice Jepchirchir', 'Samuel Kipchumba', 'Diana Wangari', 'Bernard Kiptoo', 'Florence Chebet', 'Vincent Kipchirchir', 'Janet Chepkorir', 'Isaac Kipkoech', 'Agnes Chepkoech', 'Josephat Kiprono', 'Lucy Jepchumba', 'Daniel Kipchirchir', 'Faith Chepkorir', 'Robert Kipkirui', 'Mercy Chepkoech', 'Simon Kipkoech', 'Gladys Jepchirchir', 'Joshua Kipkorir', 'Priscilla Chebet', 'Moses Kiptoo', 'Caroline Chepkoech') AS kenyan_names(name)) AS names;
 ```

@@ -372,29 +372,30 @@ app.get('/dashboard', (req, res) => {
 
 app.get('/courses', (req, res) => {
     if (req.session.user_id) {
-        let checkifenroll = 'SELECT * FROM enrollments WHERE student_id = ?'
-        connection.query(checkifenroll, [req.session.user_id], (error, results) => {
-            if (error) {
-                console.error('Error querying enrollments:', error)
-                res.status(500).send('Error querying enrollments')
-                return
+        // let checkifenroll = 'SELECT * FROM enrollments WHERE student_id = ?'
+        // connection.query(checkifenroll, [req.session.user_id], (error, results) => {
+        //     if (error) {
+        //         console.error('Error querying enrollments:', error)
+        //         res.status(500).send('Error querying enrollments')
+        //         return
+        //     }
+        //     if (results.length > 0) {
+                
+        //     } else {
+        //         res.redirect('/enroll')
+        //     }
+        // })
+        let coursesSQL = 'SELECT c.course_id, c.course_code, c.name AS course_name, u.name AS lecturer_name, u.profilepicture AS lecturer_profilepicture, COALESCE(e.isactive, 0) AS isactive FROM courses c JOIN user u ON c.lecturer_id = u.user_id LEFT JOIN enrollments e ON c.course_id = e.course_id AND e.student_id = ? WHERE e.student_id IS NULL OR e.isactive = 1'
+        connection.query(
+            coursesSQL, [req.session.user_id], (error, courses) => {
+                if (error) {
+                    console.error('Error querying courses:', error)
+                    res.status(500).send('Error querying courses')
+                    return
+                }
+                res.render('courses', {courses: courses})
             }
-            if (results.length > 0) {
-                let coursesSQL = 'SELECT c.course_id, c.course_code, c.name AS course_name, u.name AS lecturer_name, u.profilepicture AS lecturer_profilepicture, COALESCE(e.isactive, 0) AS isactive FROM courses c JOIN user u ON c.lecturer_id = u.user_id LEFT JOIN enrollments e ON c.course_id = e.course_id AND e.student_id = ? WHERE e.student_id IS NULL OR e.isactive = 1'
-                connection.query(
-                    coursesSQL, [req.session.user_id], (error, courses) => {
-                        if (error) {
-                            console.error('Error querying courses:', error)
-                            res.status(500).send('Error querying courses')
-                            return
-                        }
-                        res.render('courses', {courses: courses})
-                    }
-                )
-            } else {
-                res.redirect('/enroll')
-            }
-        })
+        )
     } else {
         res.redirect('/login')
     }
@@ -426,21 +427,33 @@ app.post('/enroll', (req, res) => {
             courses = [courses];
         }
         let enrollmentSQL = 'INSERT INTO enrollments (course_id, student_id) VALUES (?, ?)'
+        let updateenrollmentSQL = 'UPDATE enrollments SET isactive = 1 WHERE course_id = ? AND student_id = ?'
+        let checkIfEnrolled = 'SELECT * FROM enrollments WHERE student_id = ? AND course_id = ?'
         courses.forEach(course => {
-            connection.query(enrollmentSQL, [course, student_id], (error, results) => {
-                if (error) {
-                    console.error('Error enrolling student:', error)
-                    return res.status(500).send('Error enrolling student')
+            connection.query(checkIfEnrolled, [student_id, course], (error, results) => {
+                if (results.length > 0) {
+                    connection.query(updateenrollmentSQL, [course, student_id], (error, results) => {
+                        if (error) {
+                            console.error('Error enrolling student:', error)
+                            return res.status(500).send('Error enrolling student')
+                        }
+                    })
+                } else {
+                    connection.query(enrollmentSQL, [course, student_id], (error, results) => {
+                        if (error) {
+                            console.error('Error enrolling student:', error)
+                            return res.status(500).send('Error enrolling student')
+                        }
+                    })
                 }
             })
         })
-        res.redirect('/courses')
     } else {
         res.redirect('/login')
     }
 })
 
-app.get('/edit-courses', (req, res) => {
+app.get('/unenroll', (req, res) => {
     if (req.session.user_id) {
         let enrolledcoursesSQL = 'SELECT courses.course_id, courses.course_code, courses.name AS course_name FROM courses JOIN enrollments ON courses.course_id = enrollments.course_id WHERE enrollments.student_id = ? AND isactive = 1'
         connection.query(
@@ -450,7 +463,7 @@ app.get('/edit-courses', (req, res) => {
                     res.status(500).send('Error querying ENROLLED courses')
                     return
                 }
-                res.render('edit-courses', {enrolledcourses: enrolledcourses})
+                res.render('unenroll', {enrolledcourses: enrolledcourses})
             }
         )
     } else {

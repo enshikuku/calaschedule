@@ -123,7 +123,15 @@ app.get('/signup', (req, res) => {
         password: '',
         confirmpassword: ''
     }
-    res.render('signup', { error: false, user: user })
+    let departmentSQL = 'SELECT * FROM departments'
+    connection.query(departmentSQL, (error, departments) => {
+        if (error) {
+            console.error('Error querying departments:', error)
+            res.status(500).send('Error querying departments')
+            return
+        }
+        res.render('signup', { error: false, user: user, departments: departments })
+    })
 })
 
 // Route to handle signup form submission
@@ -131,6 +139,7 @@ app.post('/signup', async (req, res) => {
     const user = {
         name: req.body.name,
         email: req.body.email,
+        department: req.body.department,
         password: req.body.password,
         confirmpassword: req.body.confirmpassword
     }
@@ -220,27 +229,30 @@ app.post('/verify-otp', (req, res) => {
         name: req.body.name,
         email: req.body.email,
         password: req.body.password,
+        department: req.body.department,
         id: req.body.id,
         otp: req.body.otp
     }
 
     let sqlSelect = 'SELECT * FROM otp WHERE otpcode = ? AND used = "false"'
-    connection.query(sqlSelect, [user.otp], async (error, results) => {
+    connection.query(sqlSelect, [user.otp], async (error, otpresults) => {
         try {
             if (error) {
                 console.error('Error verifying OTP:', error)
                 res.status(500).send('Error verifying OTP')
                 return
             }
-            if (results.length > 0) {
-                let sqlInsert = 'INSERT INTO user (name, email, password, user_id) VALUES (?, ?, ?, ?)'
+            if (otpresults[0].otpcode === user.otp) {
+                console.log('OTP verified')
+                let sqlInsert = 'INSERT INTO user (name, email, password, user_id, dpt_code) VALUES (?, ?, ?, ?, ?)'
                 const hash = await bcrypt.hash(user.password, 10)
-                connection.query(sqlInsert, [user.name, user.email, hash, user.id], async (error, results) => {
+                connection.query(sqlInsert, [user.name, user.email, hash, user.id, user.department], async (error, results) => {
                     if (error) {
                         console.error('Error inserting user:', error)
                         res.status(500).send('Error inserting user')
                         return
                     }
+                    console.log('User inserted:', user.department)
                     let sqlUpdate = 'UPDATE otp SET used = "true" WHERE otpcode = ?'
                     connection.query(sqlUpdate, [user.otp], async (error, results) => {
                         if (error) {
@@ -261,6 +273,7 @@ app.post('/verify-otp', (req, res) => {
                                 return
                             }
                             req.session.user_id = user.id
+                            req.session.dpt = user.department
                             req.session.username = user.name.split(' ')[0]
                             res.redirect('/dashboard')
                         })
@@ -294,19 +307,27 @@ app.post('/login', (req, res) => {
     }
 
     let sql = 'SELECT * FROM user WHERE email = ?'
-    connection.query(sql, [user.email], async (error, results) => {
+    connection.query(sql, [user.email], async (error, user) => {
         try {
             if (error) {
                 console.error('Error querying user:', error)
                 res.status(500).send('Error querying user')
                 return
             }
-            if (results.length > 0) {
-                const passwordMatches = await bcrypt.compare(user.password, results[0].password)
+            if (user.length > 0) {
+                const passwordMatches = await bcrypt.compare(user.password, user[0].password)
                 if (passwordMatches) {
-                    req.session.user_id = results[0].user_id
-                    req.session.username = results[0].name.split(' ')[0]
-                    res.redirect('/dashboard')
+                    if (user.role === 'student') {
+                        req.session.user_id = user[0].user_id
+                        req.session.dpt = user[0].dpt_code
+                        req.session.username = user[0].name.split(' ')[0]
+                        res.redirect('/dashboard')
+                    } else {
+                        req.session.user_id = user[0].user_id
+                        req.session.tutor = true
+                        req.session.username = user[0].name.split(' ')[0]
+                        res.redirect('/dashboard')
+                    }
                 } else {
                     let message = 'Incorrect password!'
                     res.render('login', { error: true, message: message, user: user })
@@ -430,23 +451,35 @@ app.post('/enroll', (req, res) => {
         let updateenrollmentSQL = 'UPDATE enrollments SET isactive = 1 WHERE course_id = ? AND student_id = ?'
         let checkIfEnrolled = 'SELECT * FROM enrollments WHERE student_id = ? AND course_id = ?'
         courses.forEach(course => {
-            connection.query(checkIfEnrolled, [student_id, course], (error, results) => {
-                if (results.length > 0) {
-                    connection.query(updateenrollmentSQL, [course, student_id], (error, results) => {
-                        if (error) {
-                            console.error('Error enrolling student:', error)
-                            return res.status(500).send('Error enrolling student')
-                        }
-                    })
-                } else {
-                    connection.query(enrollmentSQL, [course, student_id], (error, results) => {
-                        if (error) {
-                            console.error('Error enrolling student:', error)
-                            return res.status(500).send('Error enrolling student')
-                        }
-                    })
+            connection.query(
+                checkIfEnrolled, 
+                [student_id, course], 
+                (error, results) => {
+                    if (results.length > 0) {
+                        connection.query(
+                            updateenrollmentSQL, 
+                            [course, student_id], 
+                            (error, results) => {
+                                if (error) {
+                                    console.error('Error enrolling student:', error)
+                                    return res.status(500).send('Error enrolling student')
+                                }
+                            }
+                        )
+                    } else {
+                        connection.query(
+                            enrollmentSQL, 
+                            [course, student_id], 
+                            (error, results) => {
+                                if (error) {
+                                    console.error('Error enrolling student:', error)
+                                    return res.status(500).send('Error enrolling student')
+                                }
+                            }
+                        )
+                    }
                 }
-            })
+            )
         })
     } else {
         res.redirect('/login')
@@ -487,7 +520,6 @@ app.post('/unenroll', (req, res) => {
                 }
             })
         })
-        
         res.redirect('/courses')
     } else {
         res.redirect('/login')

@@ -102,6 +102,7 @@ CREATE TABLE schedules (
     start_time TIME,
     end_time TIME,
     room_id INT REFERENCES rooms(room_id),
-    lecturer_id VARCHAR(10) REFERENCES user(user_id)
+    lecturer_id VARCHAR(10) REFERENCES user(user_id),
+    dpt_code VARCHAR(10) REFERENCES departments(dpt_code)
 );
 ```

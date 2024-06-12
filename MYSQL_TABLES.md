@@ -12,6 +12,15 @@ CREATE TABLE otp (
 );
 ```
 
+## Departments Table
+
+```sql
+CREATE TABLE departments (
+    dpt_code SERIAL PRIMARY KEY,
+    dpt_name VARCHAR(255)
+);
+```
+
 ## User Table
 
 ```sql
@@ -21,7 +30,8 @@ CREATE TABLE user (
     email VARCHAR(100) UNIQUE,
     password VARCHAR(255),
     profilepicture VARCHAR(100) DEFAULT 'user.png',
-    role VARCHAR(50) DEFAULT 'student'
+    role VARCHAR(50) DEFAULT 'student',
+    dpt_code VARCHAR(10) REFERENCES departments(dpt_code)
 );
 ```
 
@@ -32,7 +42,8 @@ CREATE TABLE courses (
     course_id INT(11) AUTO_INCREMENT PRIMARY KEY,
     course_code VARCHAR(10),
     name VARCHAR(100),
-    lecturer_id VARCHAR(10) REFERENCES user(user_id)
+    lecturer_id VARCHAR(10) REFERENCES user(user_id),
+    dpt_code VARCHAR(10) REFERENCES departments(dpt_code)
 );
 ```
 

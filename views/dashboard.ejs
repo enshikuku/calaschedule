@@ -127,45 +127,41 @@
                     <div class="quote-container" style="height: 30px; color: aliceblue;">
                         <p><span id="quote"></span></p>
                     </div>
-                </div>
-                <div class="row content" data-aos="fade-up">
+                </div><div class="row content" data-aos="fade-up">
                     <% days.forEach(day => { %>
                         <div>
                             <h2><%= day.name %></h2>
                             <div>
                                 <% let classesForDay = studentClasses.filter(classItem => classItem.day_id === day.day_id); %>
-                                <% if(classesForDay.length > 0) { %>
-                                    <table class="table table-striped">
-                                        <thead>
+                                <table class="table table-striped">
+                                    <thead>
+                                        <% if (classesForDay.length > 0) { %>
                                             <tr>
                                                 <th scope="col">Time</th>
                                                 <th scope="col">Class</th>
                                                 <th scope="col">Venue</th>
                                             </tr>
-                                        </thead>
-                                        <tbody>
-                                            <% classesForDay.forEach(classItem => { %>
-                                                <tr>
-                                                    <td><%= classItem.start_time %></td>
-                                                    <td><%= classItem.course_code %></td>
-                                                    <td><%= classItem.venue %></td>
-                                                </tr>
-                                            <% }); %>
-                                        </tbody>
-                                    </table>
-                                <% } else { %>
-                                    <table class="table table-striped">
-                                        <thead>
+                                        <% } else { %>
                                             <tr>
                                                 <th colspan="3" scope="row" style="font-size: 18px;">No classes on <%= day.name %></th>
                                             </tr>
-                                        </thead>
-                                    </table>
-                                <% } %>
+                                        <% } %>
+                                    </thead>
+                                    <tbody>
+                                        <% classesForDay.forEach(classItem => { %>
+                                            <tr>
+                                                <td><%= classItem.start_time %></td>
+                                                <td><%= classItem.course_code %></td>
+                                                <td><%= classItem.venue %></td>
+                                            </tr>
+                                        <% }); %>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     <% }) %>
                 </div>
+                
             </div>
             
         </section><!-- End About Section -->

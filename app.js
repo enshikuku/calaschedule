@@ -307,15 +307,15 @@ app.post('/login', (req, res) => {
     }
 
     let sql = 'SELECT * FROM user WHERE email = ?'
-    connection.query(sql, [user.email], async (error, user) => {
+    connection.query(sql, [user.email], async (error, dbuser) => {
         try {
             if (error) {
                 console.error('Error querying user:', error)
                 res.status(500).send('Error querying user')
                 return
             }
-            if (user.length > 0) {
-                const passwordMatches = await bcrypt.compare(user.password, user[0].password)
+            if (dbuser.length > 0) {
+                const passwordMatches = await bcrypt.compare(user.password, dbuser[0].password)
                 if (passwordMatches) {
                     if (user.role === 'student') {
                         req.session.user_id = user[0].user_id

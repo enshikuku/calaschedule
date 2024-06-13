@@ -317,17 +317,10 @@ app.post('/login', (req, res) => {
             if (dbuser.length > 0) {
                 const passwordMatches = await bcrypt.compare(user.password, dbuser[0].password)
                 if (passwordMatches) {
-                    if (user.role === 'student') {
-                        req.session.user_id = user[0].user_id
-                        req.session.dpt = user[0].dpt_code
-                        req.session.username = user[0].name.split(' ')[0]
-                        res.redirect('/dashboard')
-                    } else {
-                        req.session.user_id = user[0].user_id
-                        req.session.tutor = true
-                        req.session.username = user[0].name.split(' ')[0]
-                        res.redirect('/dashboard')
-                    }
+                    req.session.user_id =dbuser[0].user_id
+                    req.session.dpt =dbuser[0].dpt_code
+                    req.session.username =dbuser[0].name.split(' ')[0]
+                    res.redirect('/dashboard')
                 } else {
                     let message = 'Incorrect password!'
                     res.render('login', { error: true, message: message, user: user })
@@ -345,9 +338,9 @@ app.post('/login', (req, res) => {
 
 app.get('/dashboard', (req, res) => {
     if (req.session.user_id) {
-        let coursesSQL = 'SELECT c.course_id, c.course_code, c.name AS course_name, u.name AS lecturer_name, u.profilepicture AS lecturer_profilepicture FROM courses c JOIN user u ON c.lecturer_id = u.user_id'
+        let coursesSQL = 'SELECT c.course_code, c.name AS course_title, u.name AS lecturer_name, u.profilepicture AS lecturer_profilepicture, e.isactive FROM courses c JOIN user u ON c.lecturer_id = u.user_id JOIN enrollments e ON c.course_id = e.course_id JOIN departments d ON c.dpt_code = d.dpt_code WHERE e.student_id = ? AND c.dpt_code = (SELECT dpt_code FROM user WHERE user_id = ?)'
         connection.query(
-            coursesSQL, (error, courses) => {
+            coursesSQL,[req.session.user_id, req.session.user_id], (error, courses) => {
                 if (error) {
                     console.error('Error querying courses:', error)
                     res.status(500).send('Error querying courses')
@@ -406,9 +399,9 @@ app.get('/courses', (req, res) => {
         //         res.redirect('/enroll')
         //     }
         // })
-        let coursesSQL = 'SELECT c.course_id, c.course_code, c.name AS course_name, u.name AS lecturer_name, u.profilepicture AS lecturer_profilepicture, COALESCE(e.isactive, 0) AS isactive FROM courses c JOIN user u ON c.lecturer_id = u.user_id LEFT JOIN enrollments e ON c.course_id = e.course_id AND e.student_id = ? WHERE e.student_id IS NULL OR e.isactive = 1'
+        let coursesSQL = 'SELECT c.course_code, c.name AS course_title, u.name AS lecturer_name, u.profilepicture AS lecturer_profilepicture, e.isactive FROM courses c JOIN user u ON c.lecturer_id = u.user_id JOIN enrollments e ON c.course_id = e.course_id JOIN departments d ON c.dpt_code = d.dpt_code WHERE e.student_id = ? AND c.dpt_code = (SELECT dpt_code FROM user WHERE user_id = ?)'
         connection.query(
-            coursesSQL, [req.session.user_id], (error, courses) => {
+            coursesSQL, [req.session.user_id, req.session.user_id], (error, courses) => {
                 if (error) {
                     console.error('Error querying courses:', error)
                     res.status(500).send('Error querying courses')
@@ -536,17 +529,7 @@ app.get('/profile', (req, res) => {
                     res.status(500).send('Error querying user')
                     return
                 }
-                let enrolledcoursesSQL = 'SELECT courses.course_code, courses.name AS course_name FROM courses JOIN enrollments ON courses.course_id = enrollments.course_id WHERE enrollments.student_id = ? AND isactive = 1'
-                connection.query(
-                    enrolledcoursesSQL, [req.session.user_id], (error, enrolledcourses) => {
-                        if (error) {
-                            console.error('Error querying ENROLLED courses:', error)
-                            res.status(500).send('Error querying ENROLLED courses')
-                            return
-                        }
-                        res.render('profile', {user: user[0], enrolledcourses: enrolledcourses})
-                    }
-                )    
+                res.render('profile', {user: user[0]})
             }
         )
     } else {

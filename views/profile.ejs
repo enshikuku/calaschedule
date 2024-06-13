@@ -21,38 +21,6 @@
                         <a href="/courses" class="enrollnowbtn">Edit Courses</a>
                     </div>
                 </div>
-                
-                <% if(enrolledcourses.length > 0){ %>
-                    <table class="course-toenroll">
-                        <thead>
-                            <tr>
-                                <th colspan="3" >Enrolled Courses</th>
-                            </tr>
-                            <tr>
-                                <th>#</th>
-                                <th>Course Code</th>
-                                <th>Course Title</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% enrolledcourses.forEach(course => { %>
-                                <tr>
-                                    <td><%= enrolledcourses.indexOf(course)+1 %></td>
-                                    <td><%= course.course_code %></td>
-                                    <td><%= course.course_name %></td>
-                                </tr>
-                            <% }) %>
-                        </tbody>
-                    </table>
-                <% } else { %>
-                    <table class="course-toenroll">
-                        <thead>
-                            <tr>
-                                <th colspan="3" class="text-center">You have not enrolled in any course</th>
-                            </tr>
-                        </thead>
-                    </table>
-                <% } %>
             </div>
         </div>
     </section>

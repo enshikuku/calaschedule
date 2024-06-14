@@ -20,17 +20,17 @@ insert into `courses` (`course_code`, `course_id`, `lecturer_id`, `name`) values
 
 ```sql
 insert into `user` (`email`, `name`, `password`, `profilepicture`, `role`, `user_id`) values 
-('judith.mbula.bahemuka@calaschedule.ac.ke', 'Amb. Prof. Judith Mbula Bahemuka', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '1.png', 'lecturer', '124'), 
-('lelei.k.kiboiy@calaschedule.ac.ke', 'Dr. Lelei K. Kiboiy', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '10.png', 'lecturer', '630'), 
-('thomas.cheruiyot@calaschedule.ac.ke', 'Prof. Thomas Cheruiyot', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '2.png', 'lecturer', '782'), 
-('beatrice.were@calaschedule.ac.ke', 'Prof. Beatrice Were', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '3.png', 'lecturer', '739'), 
-('phillip.raburu@calaschedule.ac.ke', 'Prof. Phillip Raburu', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '4.png', 'lecturer', '349'), 
-('paul.k.tarus@calaschedule.ac.ke', 'Prof. Paul K. Tarus', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '5.png', 'lecturer', '329'), 
-('caroline.ayuma@calaschedule.ac.ke', 'Dr. Caroline Ayuma', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '6.png', 'lecturer', '498'), 
-('donald.otieno@calaschedule.ac.ke', 'Prof. Donald Otieno', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '7.png', 'lecturer', '505'), 
-('samuel.lutta@calaschedule.ac.ke', 'Prof. Samuel Lutta', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '8.png', 'lecturer', '932'), 
-('victor.kimeli@calaschedule.ac.ke', 'Dr. Victor Kimeli', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '9.png', 'lecturer', '345'), 
-('enshikuku@gmail.com', 'Shikuku Emmanuel', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', 'profile-1716875534099-516328140.webp', 'student', '249');
+('judith.mbula.bahemuka@calaschedule.ac.ke', 'Amb. Prof. Judith Mbula Bahemuka', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '1.png', 1, '124'), 
+('lelei.k.kiboiy@calaschedule.ac.ke', 'Dr. Lelei K. Kiboiy', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '10.png', 1, '630'), 
+('thomas.cheruiyot@calaschedule.ac.ke', 'Prof. Thomas Cheruiyot', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '2.png', 1, '782'), 
+('beatrice.were@calaschedule.ac.ke', 'Prof. Beatrice Were', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '3.png', 1, '739'), 
+('phillip.raburu@calaschedule.ac.ke', 'Prof. Phillip Raburu', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '4.png', 1, '349'), 
+('paul.k.tarus@calaschedule.ac.ke', 'Prof. Paul K. Tarus', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '5.png', 1, '329'), 
+('caroline.ayuma@calaschedule.ac.ke', 'Dr. Caroline Ayuma', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '6.png', 1, '498'), 
+('donald.otieno@calaschedule.ac.ke', 'Prof. Donald Otieno', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '7.png', 1, '505'), 
+('samuel.lutta@calaschedule.ac.ke', 'Prof. Samuel Lutta', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '8.png', 1, '932'), 
+('victor.kimeli@calaschedule.ac.ke', 'Dr. Victor Kimeli', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '9.png', 1, '345'), 
+('enshikuku@gmail.com', 'Shikuku Emmanuel', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', 'profile-1716875534099-516328140.webp', 0, '249');
 ```
 
 ### Days

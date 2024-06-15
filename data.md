@@ -30,7 +30,7 @@ insert into `user` (`email`, `name`, `password`, `profilepicture`, `role`, `user
 ('donald.otieno@calaschedule.ac.ke', 'Prof. Donald Otieno', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '7.png', 1, '505'), 
 ('samuel.lutta@calaschedule.ac.ke', 'Prof. Samuel Lutta', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '8.png', 1, '932'), 
 ('victor.kimeli@calaschedule.ac.ke', 'Dr. Victor Kimeli', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '9.png', 1, '345'), 
-('enshikuku@gmail.com', 'Shikuku Emmanuel', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', 'profile-1716875534099-516328140.webp', 0, '249');
+('enshikuku@gmail.com', 'Shikuku Emmanuel', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', 'profile-1716875534099-516328140.webp', 2, '249');
 ```
 
 ### Days

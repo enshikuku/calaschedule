@@ -91,25 +91,26 @@ insert into `testimonials` (`message`, `name`, `profilepicture`, `role`) values
 ### Additional Users
 
 ```sql
-INSERT INTO user (`user_id`, `name`, `email`, `password`, `profilepicture`, `role`) VALUES
-(1, 'Wanjiku Mwangi', 'wanjikumwangi@gmail.com', '$2b$10$1a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z', '', ''),
-(2, 'Otieno Oduor', 'otienooduor@yahoo.com', '$2b$10$2a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z', '', ''),
-(3, 'Akinyi Achieng', 'akinyi.achieng@hotmail.com', '$2b$10$3a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z', '', ''),
-(4, 'Mutiso Nzioka', 'mutisonzioka@gmail.com', '$2b$10$4a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z', '', ''),
-(5, 'Chebet Kiprono', 'chebetkiprono@gmail.com', '$2b$10$5a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z', '', ''),
-(6, 'Njeri Wambui', 'njeriwambui@gmail.com', '$2b$10$6a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z', '', ''),
-(7, 'Kamau Gitau', 'kamaugitau@gmail.com', '$2b$10$7a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z', '', ''),
-(8, 'Atieno Adhiambo', 'atienoadhiambo@yahoo.com', '$2b$10$8a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z', '', ''),
-(9, 'Ochieng Odhiambo', 'odiengodhiambo@hotmail.com', '$2b$10$9a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z', '', ''),
-(10, 'Wangari Muthoni', 'wangarimuthoni@gmail.com', '$2b$10$0a2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z', '', ''),
-(11, 'Nyambura Njeri', 'nyamburanjeri@gmail.com', '$2b$10$na2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z', '', ''),
-(12, 'Muthoni Wangari', 'muthoniwangari@gmail.com', '$2b$10$ma2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z', '', ''),
-(13, 'Juma Ali', 'jumaali@gmail.com', '$2b$10$ja2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z', '', ''),
-(14, 'Makena Nyambura', 'makenanyambura@gmail.com', '$2b$10$ka2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z', '', ''),
-(15, 'Obiero Ochieng', 'obieroochieng@gmail.com', '$2b$10$oa2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z', '', ''),
-(16, 'Atieno Akinyi', 'atienoakinyi@yahoo.com', '$2b$10$pa2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z', '', ''),
-(17, 'Mwangi Wanjiku', 'mwangiwanjiku@hotmail.com', '$2b$10$qa2b3c4d5e6f7g8h9i0j1k2l3m4n5o6p7q8r9s0t1u2v3w4x5y6z', '', ''),
-(18, 'Omondi Nyambura', 'omondinyambura@gmail.com', '$2b$10$a1b2c3d4e5f6g7h8i9j0k3l4m5n6o7p8q9r0s1t2u3v4w5x6y7z', '', ''),
-(19, 'Ochieng Otieno', 'ochiengotieno@gmail.com', '$2b$10$b1c2d3e4f5g6h7i8j9k0l1m2n3o4p5q6r7s8t9u0v1w2x3y4z', '', ''),
-(20, 'Wambui Njeri', 'wambuinjeri@yahoo.com', '$2b$10$c1d2e3f4g5h6i7j8k9l0m1n2o3p4q5r6s7t8u9v0w1x2y3z', '', '');
+INSERT INTO user (user_id, name, email, password, profilepicture, role, dpt_code, timestamp)
+SELECT 
+    2000 + seq.seq AS user_id,
+    names.name AS name,
+    CONCAT(REPLACE(names.name, ' ', '.'), '@calaschedule.co.ke') AS email,
+    '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu' AS password,
+    CONCAT(FLOOR(RAND() * 10) + 1, '.png') AS profilepicture,
+    0 AS role,
+    FLOOR(RAND() * 3) + 1 AS dpt_code,
+    DATE_ADD('2024-08-15 00:00:00', INTERVAL FLOOR(RAND() * 15) DAY) AS timestamp
+FROM
+    (SELECT seq, kenyan_names.name
+     FROM seq_1_to_30 AS seq
+     CROSS JOIN (
+         SELECT 'Brian Kipkoech', 'Faith Wanjiru', 'Kevin Kamau', 'Mercy Chebet', 'Peter Omondi',
+                'Rose Achieng', 'David Njoroge', 'Grace Mwangi', 'John Kimani', 'Lilian Nyambura',
+                'Stephen Kiptoo', 'Susan Akinyi', 'Michael Otieno', 'Catherine Wangari', 'Josephat Njoroge',
+                'Jane Auma', 'Paul Waweru', 'Ruth Nduta', 'James Maina', 'Mary Atieno',
+                'Andrew Ochieng', 'Margaret Wambui', 'Patrick Kiprono', 'Joyce Njeri', 'Francis Musyoka',
+                'Caroline Chepkorir', 'Daniel Kariuki', 'Hellen Nekesa', 'Samuel Mutua', 'Esther Muthoni'
+     ) AS kenyan_names(name)
+    ) AS names;
 ```

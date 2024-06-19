@@ -272,10 +272,18 @@ app.post('/verify-otp', (req, res) => {
                                 res.status(500).send('Error sending email')
                                 return
                             }
-                            req.session.user_id = user.id
-                            req.session.dpt = user.department
-                            req.session.username = user.name.split(' ')[0]
-                            res.redirect('/dashboard')
+                            let userenrollments = 'INSERT INTO enrollments (isactive, course_id, student_id) SELECT 0, course_id, ? FROM courses WHERE dpt_code = ?'
+                            connection.query(userenrollments, [user.id, user.department], (error, results) => {
+                                if (error) {
+                                    console.error('Error inserting user enrollments:', error)
+                                    res.status(500).send('Error inserting user enrollments')
+                                    return
+                                }
+                                req.session.user_id = user.id
+                                req.session.dpt = user.department
+                                req.session.username = user.name.split(' ')[0]
+                                res.redirect('/dashboard')
+                            })
                         })
                     })
                 })
@@ -386,19 +394,6 @@ app.get('/dashboard', (req, res) => {
 
 app.get('/courses', (req, res) => {
     if (req.session.user_id) {
-        // let checkifenroll = 'SELECT * FROM enrollments WHERE student_id = ?'
-        // connection.query(checkifenroll, [req.session.user_id], (error, results) => {
-        //     if (error) {
-        //         console.error('Error querying enrollments:', error)
-        //         res.status(500).send('Error querying enrollments')
-        //         return
-        //     }
-        //     if (results.length > 0) {
-                
-        //     } else {
-        //         res.redirect('/enroll')
-        //     }
-        // })
         let coursesSQL = 'SELECT c.course_code, c.name AS course_title, u.name AS lecturer_name, u.profilepicture AS lecturer_profilepicture, e.isactive FROM courses c JOIN user u ON c.lecturer_id = u.user_id JOIN enrollments e ON c.course_id = e.course_id JOIN departments d ON c.dpt_code = d.dpt_code WHERE e.student_id = ? AND c.dpt_code = (SELECT dpt_code FROM user WHERE user_id = ?)'
         connection.query(
             coursesSQL, [req.session.user_id, req.session.user_id], (error, courses) => {
@@ -417,9 +412,9 @@ app.get('/courses', (req, res) => {
 
 app.get('/enroll', (req, res) => {
     if (req.session.user_id) {
-        let coursesSQL = 'SELECT c.course_id, c.course_code, c.name AS course_name, u.name AS lecturer_name, u.profilepicture AS lecturer_profilepicture FROM courses c JOIN user u ON c.lecturer_id = u.user_id WHERE c.course_id NOT IN (SELECT course_id FROM enrollments WHERE student_id = ? AND isactive = 1)'
+        let coursesSQL = ` SELECT  c.course_id,  c.course_code,  c.name AS course_name,  u.name AS lecturer_name,  u.profilepicture AS lecturer_profilepicture  FROM  courses c  JOIN user u ON c.lecturer_id = u.user_id  WHERE  c.course_id NOT IN ( SELECT course_id  FROM enrollments  WHERE student_id = ?  AND isactive = 1 ) AND c.dpt_code = ?`
         connection.query(
-            coursesSQL, [req.session.user_id], (error, courses) => {
+            coursesSQL, [req.session.user_id, req.session.dpt], (error, courses) => {
                 if (error) {
                     console.error('Error querying courses:', error)
                     res.status(500).send('Error querying courses')
@@ -474,6 +469,7 @@ app.post('/enroll', (req, res) => {
                 }
             )
         })
+        res.redirect('/courses')
     } else {
         res.redirect('/login')
     }
@@ -578,39 +574,79 @@ app.post('/edit-profile', uploadprofilePicture.single('profilepicture'), (req, r
     }
 })
 
+app.get('/forgot-password', (req, res) => {
+    res.render('forgot-password', {error: false, success: false, otpinput: false})
+})
+app.post('/forgot-password', (req, res) => {
+    let email = req.body.email
+    let sql = 'SELECT * FROM user WHERE email = ?'
+    connection.query(sql, [email], async (error, results) => {
+        if (error) {
+            console.error('Error querying user:', error)
+            res.status(500).send('Error querying user')
+            return
+        }
+        if (results.length > 0) {
+            let OTP = generateotp()
+            let otpsql = 'SELECT * FROM otp WHERE otpcode = ?'
+            do {
+                OTP = generateotp()
+            } while (await checkIfIdExists(OTP, otpsql))
+            req.session.otp = OTP
+            let sqlotp3 = 'SELECT * FROM otp WHERE email = ?'
+            const otpResults = await checkIfIdExists(email, sqlotp3)
+            if (otpResults.length > 0) {
+                let message = 'An OTP has already been sent to your email. Please check your email and enter the OTP to reset your password.'
+                res.render('forgot-password', {error: true, success: false, message: message, otpinput: true, email: email})
+            } else {
+                let otpsql2 = 'INSERT INTO otp (otpcode, email) VALUES (?, ?)'
+                connection.query(otpsql2, [OTP, email], async (error, results) => {
+                    if (error) {
+                        console.error('Error inserting OTP:', error)
+                        res.status(500).send('Error inserting OTP')
+                        return
+                    } else {
+                        const mailData = {
+                            from: process.env.EMAIL,
+                            to: email,
+                            subject: 'Your CALASCHEDULE OTP Code for Password Reset',
+                            text: `Dear User,\n\nYou have requested to reset your password on CALASCHEDULE. Your One-Time Password (OTP) for password reset is ${OTP}. This OTP will expire in 10 minutes.\n\nHappy scheduling!\n\nBest regards,\nThe CALASCHEDULE Team`
+                        }
+                        sendMail(mailData, (error) => {
+                            if (error) {
+                                console.error('Error sending email:', error)
+                                res.status(500).send('Error sending email')
+                                return
+                            }
+                            message = 'An OTP has been sent to your email. Please check your email and enter the OTP to reset your password.'
+                            res.render('forgot-password', {error: false, success: true, message: message, otpinput: true, email: email})
+                            setTimeout(() => {
+                                let sql = 'SELECT otpcode FROM otp WHERE email = ?'
+                                connection.query(sql, [email], (error, results) => {
+                                    if (results[0].used === 'false') {
+                                        const updateSql = 'UPDATE otp SET used = "true" WHERE otpcode = ?'
+                                        connection.query(updateSql, [OTP], (updateError, updateResults) => {
+                                            if (updateError) {
+                                                console.error('Error updating OTP status:', updateError)
+                                            } else {
+                                                console.log('OTP status updated to true', updateResults)
+                                            }
+                                        })
+                                    } else {
+                                        console.log('OTP already used')
+                                    }
+                                })
+                            }, 10 * 60 * 1000)
+                        })
+                    }
+                })
+            }
+        }
+    })
+})
 app.get('/schedule', (req, res) => {
     if (req.session.user_id) {
-        let coursesSQL = 'SELECT * FROM courses'
-        connection.query(
-            coursesSQL, (error, courses) => {
-                if (error) {
-                    console.error('Error querying courses:', error)
-                    res.status(500).send('Error querying courses')
-                    return
-                }
-                let daysSQL = 'SELECT * FROM days'
-                connection.query(
-                    daysSQL, (error, days) => {
-                        if (error) {
-                            console.error('Error querying days:', error)
-                            res.status(500).send('Error querying days')
-                            return
-                        }
-                        let roomsSQL = 'SELECT * FROM rooms'
-                        connection.query(
-                            roomsSQL, (error, rooms) => {
-                                if (error) {
-                                    console.error('Error quering rooms:', error)
-                                    res.status(500).send('Error quering rooms')
-                                    return
-                                }
-                                res.render('schedule', {rooms: rooms, days: days, courses: courses})
-                            }
-                        )
-                    }
-                )
-            }
-        )
+        
     } else {
         res.redirect('/login')
     }

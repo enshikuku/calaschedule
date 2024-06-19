@@ -34,6 +34,11 @@
                                 <%= message %>
                             </div>
                         <% } %>
+                        <% if(success){ %>
+                            <div class="alert alert-success" role="alert">
+                                <%= message %>
+                            </div>
+                        <% } %>
                         <div class="row gy-2 gx-md-3">
                             <div class="col-md-6 form-group">
                                 <label for="email">Your Email</label>

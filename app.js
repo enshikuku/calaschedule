@@ -304,7 +304,7 @@ app.get('/login', (req, res) => {
         email: '',
         password: ''
     }
-    res.render('login', { error: false, user: user })
+    res.render('login', { error: false, success: false, user: user })
 })
 
 // Route to handle login form submission
@@ -331,11 +331,11 @@ app.post('/login', (req, res) => {
                     res.redirect('/dashboard')
                 } else {
                     let message = 'Incorrect password!'
-                    res.render('login', { error: true, message: message, user: user })
+                    res.render('login', { error: true,success: false,  message: message, user: user })
                 }
             } else {
                 let message = 'Account does not exist. Please create one'
-                res.render('login', { error: true, message: message, user: user })
+                res.render('login', { error: true, success: false, message: message, user: user })
             }
         } catch (error) {
             console.error('Error in login:', error)
@@ -577,6 +577,7 @@ app.post('/edit-profile', uploadprofilePicture.single('profilepicture'), (req, r
 app.get('/forgot-password', (req, res) => {
     res.render('forgot-password', {error: false, success: false, otpinput: false})
 })
+
 app.post('/forgot-password', (req, res) => {
     let email = req.body.email
     let sql = 'SELECT * FROM user WHERE email = ?'
@@ -593,7 +594,7 @@ app.post('/forgot-password', (req, res) => {
                 OTP = generateotp()
             } while (await checkIfIdExists(OTP, otpsql))
             req.session.otp = OTP
-            let sqlotp3 = 'SELECT * FROM otp WHERE email = ?'
+            let sqlotp3 = 'SELECT * FROM otp WHERE email = ? AND used = "false"'
             const otpResults = await checkIfIdExists(email, sqlotp3)
             if (otpResults.length > 0) {
                 let message = 'An OTP has already been sent to your email. Please check your email and enter the OTP to reset your password.'
@@ -618,7 +619,7 @@ app.post('/forgot-password', (req, res) => {
                                 res.status(500).send('Error sending email')
                                 return
                             }
-                            message = 'An OTP has been sent to your email. Please check your email and enter the OTP to reset your password.'
+                            message = 'An OTP has been sent to your email. Please check your email and enter the OTP below to reset your password.'
                             res.render('forgot-password', {error: false, success: true, message: message, otpinput: true, email: email})
                             setTimeout(() => {
                                 let sql = 'SELECT otpcode FROM otp WHERE email = ?'
@@ -644,7 +645,55 @@ app.post('/forgot-password', (req, res) => {
         }
     })
 })
-app.get('/schedule', (req, res) => {
+
+app.post('/verify-otp-forgot-password', (req, res) => {
+    let email = req.body.email
+    let otp = req.body.otp
+    let sqlSelect = 'SELECT * FROM otp WHERE otpcode = ? AND used = "false"'
+    connection.query(sqlSelect, [otp], async (error, otpresults) => {
+        try {
+            if (error) {
+                console.error('Error verifying OTP:', error)
+                res.status(500).send('Error verifying OTP')
+                return
+            }
+            if (otpresults[0].otpcode === otp) {
+                let message = 'OTP verified! You can now reset your password.'
+                res.render('reset-password', {error: false, success: true, message: message, email: email})
+            } else {
+                let message = 'Invalid OTP!'
+                res.render('forgot-password', {error: true, success: false, message: message, otpinput: true, email: email})
+            }
+        } catch (error) {
+            console.error('Error in OTP verification:', error)
+            res.status(500).send('Error in OTP verification')
+        }
+    })
+})
+
+app.post('/reset-password', (req, res) => {
+    let email = req.body.email
+    let password = req.body.password
+    let confirmpassword = req.body.confirmpassword
+    if (password === confirmpassword) {
+        let hash = bcrypt.hashSync(password, 10)
+        let sql = 'UPDATE user SET password = ? WHERE email = ?'
+        connection.query(sql, [hash, email], (error, results) => {
+            if (error) {
+                console.error('Error updating password:', error)
+                res.status(500).send('Error updating password')
+                return
+            }
+            let message = 'Password reset successful! You can now login with your new password.'
+            res.render('login', {error: false, success: true, message: message})
+        })
+    } else {
+        let message = 'Passwords do not match!'
+        res.render('forgot-password', {error: true, success: false, message: message, otpinput: true, email: email})
+    }
+})
+
+app.get('/admin', (req, res) => {
     if (req.session.user_id) {
         
     } else {

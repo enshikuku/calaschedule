@@ -97,7 +97,7 @@ SELECT
     names.name AS name,
     CONCAT(REPLACE(names.name, ' ', '.'), '@calaschedule.co.ke') AS email,
     '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu' AS password,
-    CONCAT(FLOOR(RAND() * 10) + 1, '.png') AS profilepicture,
+    'user.png' AS profilepicture,
     0 AS role,
     FLOOR(RAND() * 3) + 1 AS dpt_code,
     DATE_ADD('2024-08-15 00:00:00', INTERVAL FLOOR(RAND() * 15) DAY) AS timestamp

@@ -105,12 +105,8 @@ FROM
     (SELECT seq, kenyan_names.name
      FROM seq_1_to_30 AS seq
      CROSS JOIN (
-         SELECT 'Brian Kipkoech', 'Faith Wanjiru', 'Kevin Kamau', 'Mercy Chebet', 'Peter Omondi',
-                'Rose Achieng', 'David Njoroge', 'Grace Mwangi', 'John Kimani', 'Lilian Nyambura',
-                'Stephen Kiptoo', 'Susan Akinyi', 'Michael Otieno', 'Catherine Wangari', 'Josephat Njoroge',
-                'Jane Auma', 'Paul Waweru', 'Ruth Nduta', 'James Maina', 'Mary Atieno',
-                'Andrew Ochieng', 'Margaret Wambui', 'Patrick Kiprono', 'Joyce Njeri', 'Francis Musyoka',
-                'Caroline Chepkorir', 'Daniel Kariuki', 'Hellen Nekesa', 'Samuel Mutua', 'Esther Muthoni'
+         SELECT 
+         
      ) AS kenyan_names(name)
     ) AS names;
 ```

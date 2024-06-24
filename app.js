@@ -711,6 +711,10 @@ app.get('/admin', (req, res) => {
     }
 })
 
+app.get('/tutor-dash', (req, res) => {
+    red.render('tutor-dash')
+})
+
 app.get('/logout', (req, res) => {
     req.session.destroy((err) => {
         res.redirect('/')

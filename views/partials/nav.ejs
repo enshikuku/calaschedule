@@ -3,7 +3,14 @@
     <div class="container d-flex align-items-center justify-content-between">
         <div class="logo">
             <!-- <h1><a href="/">CALASCHEDULE</a></h1> -->
-            <a href="/"><img src="assets/img/logo.png" alt="" class="img-fluid">CALASCHEDULE</a>
+            
+            <a 
+                <% if(locals.isLoggedIn){ %>
+                    href="/dashboard"
+                <% } else { %>
+                    href="/"
+                <% } %>
+            ><img src="assets/img/logo.png" alt="" class="img-fluid">CALASCHEDULE</a>
         </div>
         <nav id="navbar" class="navbar">
             <ul>
@@ -12,8 +19,12 @@
                     <li><a class="nav-link scrollto" href="/dashboard#timetable">Timetable</a></li>
                     <li><a class="nav-link scrollto" href="/courses">Courses</a></li>
                     <li><a class="nav-link scrollto" href="/profile">Profile</a></li>
-                    <li><a class="nav-link scrollto" href="/admin">Admin</a></li>
-                    <li><a class="nav-link scrollto" href="/logout">Logout</a></li>
+                    <% if(locals.lecturer){ %>
+                        <li><a class="nav-link scrollto" href="/lecturer">Lecturer Panel</a></li>
+                    <% } else if(locals.admin){ %>
+                        <li><a class="nav-link scrollto" href="/admin">Admin Panel</a></li>
+                    <% } %>
+                        <li><a class="nav-link scrollto" href="/logout">Logout</a></li>
                 <% } else { %>
                     <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
                     <li><a class="nav-link scrollto" href="#about">About</a></li>

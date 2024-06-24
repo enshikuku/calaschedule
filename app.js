@@ -45,7 +45,9 @@ app.use((req, res, next) => {
     res.locals.username = req.session.username !== undefined ? req.session.username : 'Guest'
     res.locals.isLoggedIn = req.session.user_id !== undefined
     res.locals.user_id = req.session.user_id
-    res.locals.tutor = req.session.tutor !== undefined ? req.session.tutor : false
+    res.locals.lecturer = req.session.lecturer !== undefined ? req.session.lecturer : false
+    res.locals.admin = req.session.admin !== undefined ? req.session.admin : false
+    res.locals.student = req.session.student !== undefined ? req.session.student : false
     next()
 })
 
@@ -234,8 +236,8 @@ app.post('/verify-otp', (req, res) => {
         otp: req.body.otp
     }
 
-    let sqlSelect = 'SELECT * FROM otp WHERE otpcode = ? AND used = "false"'
-    connection.query(sqlSelect, [user.otp], async (error, otpresults) => {
+    let sqlSelect = 'SELECT * FROM otp WHERE email = ? AND used = "false"'
+    connection.query(sqlSelect, [user.email], async (error, otpresults) => {
         try {
             if (error) {
                 console.error('Error verifying OTP:', error)
@@ -282,6 +284,7 @@ app.post('/verify-otp', (req, res) => {
                                 req.session.user_id = user.id
                                 req.session.dpt = user.department
                                 req.session.username = user.name.split(' ')[0]
+                                req.session.student = true
                                 res.redirect('/dashboard')
                             })
                         })
@@ -328,6 +331,13 @@ app.post('/login', (req, res) => {
                     req.session.user_id =dbuser[0].user_id
                     req.session.dpt =dbuser[0].dpt_code
                     req.session.username =dbuser[0].name.split(' ')[0]
+                    if (dbuser[0].role === 'lecturer') {
+                        req.session.lecturer = true
+                    } else if (dbuser[0].role === 'admin') {
+                        req.session.admin = true
+                    } else {
+                        req.session.student = true
+                    }
                     res.redirect('/dashboard')
                 } else {
                     let message = 'Incorrect password!'
@@ -475,17 +485,18 @@ app.post('/enroll', (req, res) => {
     }
 })
 
+
 app.get('/unenroll', (req, res) => {
     if (req.session.user_id) {
-        let enrolledcoursesSQL = 'SELECT courses.course_id, courses.course_code, courses.name AS course_name FROM courses JOIN enrollments ON courses.course_id = enrollments.course_id WHERE enrollments.student_id = ? AND isactive = 1'
+        let coursesSQL = ` SELECT  c.course_id,  c.course_code,  c.name AS course_name,  u.name AS lecturer_name,  u.profilepicture AS lecturer_profilepicture  FROM  courses c  JOIN user u ON c.lecturer_id = u.user_id  WHERE  c.course_id NOT IN ( SELECT course_id  FROM enrollments  WHERE student_id = ?  AND isactive = 0 ) AND c.dpt_code = ?`
         connection.query(
-            enrolledcoursesSQL, [req.session.user_id], (error, enrolledcourses) => {
+            coursesSQL, [req.session.user_id, req.session.dpt], (error, courses) => {
                 if (error) {
-                    console.error('Error querying ENROLLED courses:', error)
-                    res.status(500).send('Error querying ENROLLED courses')
+                    console.error('Error querying courses:', error)
+                    res.status(500).send('Error querying courses')
                     return
                 }
-                res.render('unenroll', {enrolledcourses: enrolledcourses})
+                res.render('unenroll', {courses: courses})
             }
         )
     } else {
@@ -555,12 +566,11 @@ app.post('/edit-profile', uploadprofilePicture.single('profilepicture'), (req, r
     if (req.session.user_id) {
         let user = {
             name: req.body.name,
-            email: req.body.email,
             profilepicture: req.file ? req.file.filename : req.body.ifnoprofilepic
         }        
-        let userSQL = 'UPDATE user SET name = ?, email = ?, profilepicture = ? WHERE user_id = ?'
+        let userSQL = 'UPDATE user SET name = ?, profilepicture = ? WHERE user_id = ?'
         connection.query(
-            userSQL, [user.name, user.email, user.profilepicture, req.session.user_id], (error, results) => {
+            userSQL, [user.name, user.profilepicture, req.session.user_id], (error, results) => {
                 if (error) {
                     console.error('Error updating user:', error)
                     res.status(500).send('Error updating user')

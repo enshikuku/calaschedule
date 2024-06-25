@@ -30,8 +30,9 @@ CREATE TABLE user (
     email VARCHAR(100) UNIQUE,
     password VARCHAR(255),
     profilepicture VARCHAR(100) DEFAULT 'user.png',
-    role VARCHAR(50) DEFAULT 'student',
-    dpt_code VARCHAR(10) REFERENCES departments(dpt_code)
+    role TINYINT DEFAULT 0 CHECK (role IN (0, 1, 2)),
+    dpt_code VARCHAR(10),
+    FOREIGN KEY (dpt_code) REFERENCES departments(dpt_code)
 );
 ```
 

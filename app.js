@@ -629,26 +629,28 @@ app.post('/forgot-password', (req, res) => {
                                 res.status(500).send('Error sending email')
                                 return
                             }
-                            message = 'An OTP has been sent to your email. Please check your email and enter the OTP below to reset your password.'
-                            res.render('forgot-password', {error: false, success: true, message: message, otpinput: true, email: email})
-                            setTimeout(() => {
-                                let sql = 'SELECT otpcode FROM otp WHERE email = ?'
-                                connection.query(sql, [email], (error, results) => {
-                                    if (results[0].used === 'false') {
-                                        const updateSql = 'UPDATE otp SET used = "true" WHERE otpcode = ?'
-                                        connection.query(updateSql, [OTP], (updateError, updateResults) => {
-                                            if (updateError) {
-                                                console.error('Error updating OTP status:', updateError)
-                                            } else {
-                                                console.log('OTP status updated to true', updateResults)
-                                            }
-                                        })
-                                    } else {
-                                        console.log('OTP already used')
-                                    }
-                                })
-                            }, 10 * 60 * 1000)
                         })
+                        console.log('OTP sent:', OTP, email)
+                        let message = 'An OTP has been sent to your email. Please check your email and enter the OTP below to reset your password.'
+                        res.render('forgot-password', {error: false, success: true, message: message, otpinput: true, email: email})
+                        console.log('OTP:', OTP, email)
+                        setTimeout(() => {
+                            let sql = 'SELECT otpcode FROM otp WHERE email = ?'
+                            connection.query(sql, [email], (error, results) => {
+                                if (results[0].used === 'false') {
+                                    const updateSql = 'UPDATE otp SET used = "true" WHERE otpcode = ?'
+                                    connection.query(updateSql, [OTP], (updateError, updateResults) => {
+                                        if (updateError) {
+                                            console.error('Error updating OTP status:', updateError)
+                                        } else {
+                                            console.log('OTP status updated to true', updateResults)
+                                        }
+                                    })
+                                } else {
+                                    console.log('OTP already used')
+                                }
+                            })
+                        }, 10 * 60 * 1000)
                     }
                 })
             }
@@ -695,7 +697,7 @@ app.post('/reset-password', (req, res) => {
                 return
             }
             let message = 'Password reset successful! You can now login with your new password.'
-            res.render('login', {error: false, success: true, message: message})
+            res.render('login', {error: false, success: true, message: message, user: {email: email, password: password}})
         })
     } else {
         let message = 'Passwords do not match!'

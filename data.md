@@ -63,37 +63,6 @@ VALUES
 (739, 'Prof. Beatrice Were', 'beatrice.were@calaschedule.ac.ke', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '3.png', 1, 2, '2024-08-28 10:48:04');
 ```
 
-### Additional Users
-```sql
-
-INSERT INTO user (user_id, name, email, password, profilepicture, role, dpt_code, timestamp)
-
-SELECT
-
-    2000 + seq.seq AS user_id,
-
-    names.name AS name,
-
-    CONCAT(REPLACE(names.name, ' ', '.'), '@calaschedule.co.ke') AS email,
-
-    '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu' AS password,
-
-    'user.png' AS profilepicture,
-
-    0 AS role,
-
-    FLOOR(RAND() * 3) + 1 AS dpt_code,
-
-    DATE_ADD('2024-08-15 00:00:00', INTERVAL FLOOR(RAND() * 15) DAY) AS timestamp
-
-FROM
-
-    (SELECT seq, kenyan_names.name FROM seq_1_to_150 AS seq CROSS JOIN (SELECT 'Brian Kipkoech', 'Faith Wanjiru', 'Kevin Kamau', 'Mercy Chebet', 'Peter Omondi', 'Rose Achieng', 'David Njoroge', 'Grace Mwangi', 'John Kimani', 'Lilian Nyambura', 'Stephen Kiptoo', 'Susan Akinyi', 'Michael Otieno', 'Catherine Wangari', 'Josephat Njoroge', 'Jane Auma', 'Paul Waweru', 'Ruth Nduta', 'James Maina', 'Mary Atieno', 'Andrew Ochieng', 'Margaret Wambui', 'Patrick Kiprono', 'Joyce Njeri', 'Francis Musyoka', 'Caroline Chepkorir', 'Daniel Kariuki', 'Hellen Nekesa', 'Samuel Mutua', 'Esther Muthoni', 'Beatrice Kemunto', 'Victor Kiprop', 'Grace Njeri', 'Isaac Nyakundi', 'Lucy Muthoni', 'Dennis Kiptoo', 'Juliet Achieng', 'Kennedy Kimani', 'Sylvia Wangui', 'Felix Omondi', 'Eunice Wambui', 'Collins Ochieng', 'Nancy Chepkemoi', 'Vincent Rotich', 'Janet Chebet', 'Benson Kipchirchir', 'Ann Muthoni', 'Simon Kiptoo', 'Tabitha Chepkorir', 'Peter Kamau', 'Naomi Cherono', 'Richard Kiplagat', 'Priscilla Wanjiku', 'Moses Onyango', 'Emily Moraa', 'Joshua Njoroge', 'Agnes Wangari', 'Patrick Kibet', 'Gladys Achieng', 'Philip Kiprotich', 'Pamela Akinyi', 'Eric Ouma', 'Janet Chepchumba', 'Moses Kimutai', 'Tabitha Wangari', 'Joseph Mwangi', 'Carol Njeri', 'Kelvin Omondi', 'Diana Kemunto', 'Collins Kipkoech', 'Sheila Njeri', 'Kennedy Ochieng', 'Dorcas Chepkoech', 'Robert Kipruto', 'Miriam Auma', 'Fredrick Mutua', 'Sylvia Chebet', 'Derrick Kipkorir', 'Lucy Wambui', 'Timothy Kiptoo', 'Esther Chepkemoi', 'Patrick Kiptoo', 'Rosemary Nyambura', 'Benson Kipruto', 'Irene Njeri', 'Pauline Chepkurui', 'Johnson Nyaga', 'Faith Jebet', 'Anthony Karanja', 'Beatrice Njoki', 'Humphrey Ochieng', 'Janet Chepngeno', 'Edwin Kipchoge', 'Mercy Jepchirchir', 'Solomon Kimani', 'Agnes Nyambura', 'Victor Kiprono', 'Gladys Chepkoech', 'Hillary Rotich', 'Caroline Muthoni', 'Mark Kipkemoi', 'Lydia Chebet', 'Bernard Kiptoo', 'Faith Wairimu', 'Brian Kiprop', 'Mercy Chemutai', 'Dominic Kipkorir', 'Naomi Wangari', 'Timothy Kipchirchir', 'Brenda Chepkemoi', 'Andrew Kimutai', 'Dorcas Cheptoo', 'Collins Cheruiyot', 'Jane Chepkoech', 'Kennedy Omondi', 'Lilian Chebet', 'Peter Koech', 'Miriam Wanjiru', 'Francis Kibet', 'Sylvia Chepkoech', 'Elijah Kipruto', 'Rose Wangui', 'Kevin Kiplagat', 'Susan Chepkoech', 'Moses Kiprotich', 'Grace Chepkorir', 'Benson Kirui', 'Judith Chepngeno', 'James Kipkemoi', 'Beatrice Jepchirchir', 'Samuel Kipchumba', 'Diana Wangari', 'Bernard Kiptoo', 'Florence Chebet', 'Vincent Kipchirchir', 'Janet Chepkorir', 'Isaac Kipkoech', 'Agnes Chepkoech', 'Josephat Kiprono', 'Lucy Jepchumba', 'Daniel Kipchirchir', 'Faith Chepkorir', 'Robert Kipkirui', 'Mercy Chepkoech', 'Simon Kipkoech', 'Gladys Jepchirchir', 'Joshua Kipkorir', 'Priscilla Chebet', 'Moses Kiptoo', 'Caroline Chepkoech') AS kenyan_names(name)) AS names;
-
-```
-
-  
-  
 
 ### Days
 ```sql
@@ -185,4 +154,131 @@ insert into `testimonials` (`message`, `name`, `profilepicture`, `role`) values
 
 ('As a busy Lecturer, CALASCHEDULE is a lifesaver. Managing classes and appointments is easier, freeing up time for teaching.', 'Tom Olando', 'tom.jpg', 'Lecturer');
 
+```
+
+
+
+### Additional Users
+```sql
+INSERT INTO user (user_id, name, email, password, profilepicture, role, dpt_code, timestamp)
+VALUES
+(1001, 'Njeri Wanjiku', 'njeriwanjiku@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-08-17 10:00:02'),
+(1002, 'Otieno Kevin', 'otienokevin@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-08-18 10:00:03'),
+(1003, 'Achieng Mary', 'achiengmary@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-08-19 10:00:04'),
+(1004, 'Mutiso John', 'mutisojohn@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-08-20 10:00:05'),
+(1005, 'Wambui Grace', 'wambuigrace@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-08-21 10:00:06'),
+(1006, 'Ouma Brian', 'oumabrian@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-08-22 10:00:07'),
+(1007, 'Wairimu Ann', 'wairimuann@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-08-23 10:00:08'),
+(1008, 'Kamau James', 'kamaujames@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-08-24 10:00:09'),
+(1009, 'Mwangi Sarah', 'mwangisarah@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-08-25 10:00:10'),
+(1010, 'Omollo Jane', 'omollojane@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-08-26 10:00:11'),
+(1011, 'Kariuki Peter', 'kariukipeter@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-08-27 10:00:12'),
+(1012, 'Wanjiru Mercy', 'wanjirumercy@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-08-28 10:00:13'),
+(1013, 'Kiprono Robert', 'kipronorobert@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-08-29 10:00:14'),
+(1014, 'Ndungu Michael', 'ndungumichael@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-08-30 10:00:15'),
+(1015, 'Nderitu Paul', 'nderitupaul@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-08-31 10:00:16'),
+(1016, 'Wakaba Alice', 'wakabaalice@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-01 10:00:17'),
+(1017, 'Omondi George', 'omondigeorge@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-02 10:00:18'),
+(1018, 'Chege Susan', 'chegesusan@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-03 10:00:19'),
+(1019, 'Nyongesa Daniel', 'nyongesadaniel@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-04 10:00:20'),
+(1020, 'Kosgey Irene', 'kosgeyirene@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-05 10:00:21'),
+(1021, 'Mwende Janet', 'mwendejanet@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-06 10:00:22'),
+(1022, 'Wekesa Francis', 'wekesafrancis@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-07 10:00:23'),
+(1023, 'Wamalwa Henry', 'wamalwahenry@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-08 10:00:24'),
+(1024, 'Makori Philip', 'makoriphilip@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-09 10:00:25'),
+(1025, 'Kamotho Brian', 'kamothobrian@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-10 10:00:26'),
+(1026, 'Kipkirui Alice', 'kipkiruialice@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-11 10:00:27'),
+(1027, 'Ndunge Faith', 'ndungefaith@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-12 10:00:28'),
+(1028, 'Macharia Esther', 'machariaesther@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-13 10:00:29'),
+(1029, 'Mburu Samuel', 'mburusamuel@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-14 10:00:30'),
+(1030, 'Muiruri Diana', 'muiruridiana@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-15 10:00:31'),
+(1031, 'Osewe Timothy', 'osewetimothy@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-16 10:00:32'),
+(1032, 'Ngatia Beatrice', 'ngatiabeatrice@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-17 10:00:33'),
+(1033, 'Sifuna Thomas', 'sifunathomas@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-18 10:00:34'),
+(1034, 'Nduta Mary', 'ndutamary@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-19 10:00:35'),
+(1035, 'Ojiambo Alice', 'ojiamboalice@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-20 10:00:36'),
+(1036, 'Waweru Peter', 'wawerupeter@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-21 10:00:37'),
+(1037, 'Kilonzo Sharon', 'kilonzosharon@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-22 10:00:38'),
+(1038, 'Wainaina Francis', 'wainainafrancis@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-23 10:00:39'),
+(1039, 'Njiru Jennifer', 'njirujennifer@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-24 10:00:40'),
+(1040, 'Sang Kiprotich', 'sangkiprotich@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-25 10:00:41'),
+(1041, 'Muli Elizabeth', 'mulielizabeth@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-26 10:00:42'),
+(1042, 'Mutua Brian', 'mutuabrian@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-27 10:00:43'),
+(1043, 'Mwangi John', 'mwangijohn@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-28 10:00:44'),
+(1044, 'Odhiambo Victor', 'odhiambovictor@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-29 10:00:45'),
+(1045, 'Nduati Sarah', 'nduatisarah@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-09-30 10:00:46'),
+(1046, 'Odera Benjamin', 'oderabenjamin@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-01 10:00:47'),
+(1047, 'Nyagah Alice', 'nyagahalice@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-02 10:00:48'),
+(1048, 'Mutisya Paul', 'mutisyapaul@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-03 10:00:49'),
+(1049, 'Mbuthia Anne', 'mbuthiaanne@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-04 10:00:50'),
+(1050, 'Ochieng Edward', 'ochiengedward@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-05 10:00:51'),
+(1051, 'Wamuyu Charles', 'wamuyucharles@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-06 10:00:52'),
+(1052, 'Munyoki Dennis', 'munyokidennis@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-07 10:00:53'),
+(1053, 'Muthee Jane', 'mutheejane@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-08 10:00:54'),
+(1054, 'Maina Stephen', 'mainastephen@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-09 10:00:55'),
+(1055, 'Kariuki Irene', 'kariukirene@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-10 10:00:56'),
+(1056, 'Wafula Charles', 'wafulacharles@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-11 10:00:57'),
+(1057, 'Mwaniki Rebecca', 'mwanikirebecca@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-12 10:00:58'),
+(1058, 'Munyao Patrick', 'munyaopatrick@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-13 10:00:59'),
+(1059, 'Makau Grace', 'makaugrace@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-14 10:01:00'),
+(1060, 'Mutua Janet', 'mutuajanet@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-15 10:01:01'),
+(1061, 'Mwangangi John', 'mwangangijohn@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-16 10:01:02'),
+(1062, 'Nyambura Mary', 'nyamburamary@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-17 10:01:03'),
+(1063, 'Muriuki Paul', 'muriukipaul@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-18 10:01:04'),
+(1064, 'Njenga Simon', 'njengasimon@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-19 10:01:05'),
+(1065, 'Muthoni Alice', 'muthonialice@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-20 10:01:06'),
+(1066, 'Kibuchi Frank', 'kibuchifrank@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-21 10:01:07'),
+(1067, 'Kagwe Sharon', 'kagwesharon@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-22 10:01:08'),
+(1068, 'Mbugua David', 'mbuguadavid@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-23 10:01:09'),
+(1069, 'Muriithi Ann', 'muriithiann@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-24 10:01:10'),
+(1070, 'Kinyanjui Timothy', 'kinyanjuitimothy@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-25 10:01:11'),
+(1071, 'Mwikali Judy', 'mwikalijudy@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-26 10:01:12'),
+(1072, 'Nabwire Alice', 'nabwirealice@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-27 10:01:13'),
+(1073, 'Ndirangu Peter', 'ndirangupeter@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-28 10:01:14'),
+(1074, 'Mwangi Jane', 'mwangijane@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-29 10:01:15'),
+(1075, 'Muriuki Anthony', 'muriukianthony@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-30 10:01:16'),
+(1076, 'Ochieng Dennis', 'ochiengdennis@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-10-31 10:01:17'),
+(1077, 'Waithera Lydia', 'waitheralydia@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-01 10:01:18'),
+(1078, 'Njoroge Patrick', 'njorogepatrick@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-02 10:01:19'),
+(1079, 'Chepkemoi Ann', 'chepkemoiann@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-03 10:01:20'),
+(1080, 'Otieno Janet', 'otienojanet@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-04 10:01:21'),
+(1081, 'Mumbi David', 'mumbidavid@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-05 10:01:22'),
+(1082, 'Mutua Alice', 'mutuaalice@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-06 10:01:23'),
+(1083, 'Muthama Brian', 'muthamabrian@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-07 10:01:24'),
+(1084, 'Kariuki Simon', 'kariukisimon@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-08 10:01:25'),
+(1085, 'Ndegwa Samuel', 'ndegwasamuel@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-09 10:01:26'),
+(1086, 'Owino Mary', 'owinomary@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-10 10:01:27'),
+(1087, 'Gatwiri Irene', 'gatwiriirene@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-11 10:01:28'),
+(1088, 'Wairimu George', 'wairimugeorge@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-12 10:01:29'),
+(1089, 'Mwiti Pauline', 'mwitipauline@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-13 10:01:30'),
+(1090, 'Wambua Kevin', 'wambuakevin@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-14 10:01:31'),
+(1091, 'Mwenda Mercy', 'mwendamercy@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-15 10:01:32'),
+(1092, 'Mbugua Francis', 'mbuguafrancis@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-16 10:01:33'),
+(1093, 'Nyagah Rose', 'nyagahrose@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-17 10:01:34'),
+(1094, 'Kiptoo David', 'kiptoodavid@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-18 10:01:35'),
+(1095, 'Kilonzo Ann', 'kilonzoann@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-19 10:01:36'),
+(1096, 'Mwongela Steve', 'mwongelasteve@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-20 10:01:37'),
+(1097, 'Muthiani Jane', 'muthianijane@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-21 10:01:38'),
+(1098, 'Njoroge John', 'njorogejohn@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-22 10:01:39'),
+(1099, 'Nyaguthii Ann', 'nyaguthiiann@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-23 10:01:40'),
+(1100, 'Mutua Simon', 'mutuasimon@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-24 10:01:41'),
+(1101, 'Mwamburi David', 'mwamburidavid@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-25 10:01:42'),
+(1102, 'Kamau Alice', 'kamaualice@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-26 10:01:43'),
+(1103, 'Mbogori Mary', 'mbogorimary@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-27 10:01:44'),
+(1104, 'Mutie Joshua', 'mutiejoshua@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-28 10:01:45'),
+(1105, 'Ndambuki Michael', 'ndambukimichael@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-29 10:01:46'),
+(1106, 'Njenga Peter', 'njengapeter@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-11-30 10:01:47'),
+(1107, 'Wangari Susan', 'wangarisusan@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-12-01 10:01:48'),
+(1108, 'Nyamweya Victor', 'nyamweyavictor@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-12-02 10:01:49'),
+(1109, 'Muthoni Beatrice', 'muthonibeatrice@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-12-03 10:01:50'),
+(1110, 'Kihara James', 'kiharajames@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-12-04 10:01:51'),
+(1111, 'Ndegwa George', 'ndegwageorge@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-12-05 10:01:52'),
+(1112, 'Mwema Ann', 'mwemaann@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-12-06 10:01:53'),
+(1113, 'Mutisya Alice', 'mutisyaalice@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-12-07 10:01:54'),
+(1114, 'Ndungu Grace', 'ndungugrace@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-12-08 10:01:55'),
+(1115, 'Mwangi Jane', 'mwangijane@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-12-09 10:01:56'),
+(1116, 'Ngetich David', 'ngetichdavid@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-12-10 10:01:57'),
+(1117, 'Kimani Rose', 'kimanirose@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-12-11 10:01:58'),
+(1118, 'Kiplagat Janet', 'kiplagatjanet@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-12-12 10:01:59'),
+(1119, 'Mutua Joseph', 'mutuajoseph@calaschedule.co.ke', '', 'user.png', 0, FLOOR(1 + (RAND() * 3)), '2024-12-13 10:02:00');
 ```

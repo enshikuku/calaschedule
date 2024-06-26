@@ -331,14 +331,16 @@ app.post('/login', (req, res) => {
                     req.session.user_id =dbuser[0].user_id
                     req.session.dpt =dbuser[0].dpt_code
                     req.session.username =dbuser[0].name.split(' ')[0]
-                    if (dbuser[0].role === 'lecturer') {
+                    if (dbuser[0].role === 1) {
                         req.session.lecturer = true
-                    } else if (dbuser[0].role === 'admin') {
+                        res.redirect('/tutor-dash')
+                    } else if (dbuser[0].role === 2) {
                         req.session.admin = true
+                        res.redirect('/tutor-dash')
                     } else {
                         req.session.student = true
+                        res.redirect('/dashboard')
                     }
-                    res.redirect('/dashboard')
                 } else {
                     let message = 'Incorrect password!'
                     res.render('login', { error: true,success: false,  message: message, user: user })

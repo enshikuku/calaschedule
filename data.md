@@ -63,9 +63,6 @@ VALUES
 (739, 'Prof. Beatrice Were', 'beatrice.were@calaschedule.ac.ke', '$2b$10$wtZ8IVP3b1hV3uLHUi2tXe2MEQttmfRKzD7hlTWLYlm4jtZoMMVJu', '3.png', 1, 2, '2024-08-28 10:48:04');
 ```
 
-  
-  
-
 ### Additional Users
 ```sql
 

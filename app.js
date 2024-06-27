@@ -656,6 +656,9 @@ app.post('/forgot-password', (req, res) => {
                     }
                 })
             }
+        } else {
+            let message = 'Account does not exist. Please create one'
+            res.render('forgot-password', {error: true, success: false, message: message, otpinput: false})
         }
     })
 })
@@ -673,7 +676,15 @@ app.post('/verify-otp-forgot-password', (req, res) => {
             }
             if (otpresults[0].otpcode === otp) {
                 let message = 'OTP verified! You can now reset your password.'
-                res.render('reset-password', {error: false, success: true, message: message, email: email})
+                let updateSql = 'UPDATE otp SET used = "true" WHERE otpcode = ?'
+                connection.query(updateSql, [otp], (error, results) => {
+                    if (error) {
+                        console.error('Error updating OTP:', error)
+                        res.status(500).send('Error updating OTP')
+                        return
+                    }
+                    res.render('reset-password', {error: false, success: true, message: message, email: email})
+                })
             } else {
                 let message = 'Invalid OTP!'
                 res.render('forgot-password', {error: true, success: false, message: message, otpinput: true, email: email})

@@ -6,7 +6,6 @@ import multer from 'multer'
 import dotenv from 'dotenv'
 import nodemailer from 'nodemailer'
 import path from 'path'
-import Swal from 'sweetalert2'
 
 const app = express()
 
